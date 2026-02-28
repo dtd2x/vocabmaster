@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import type { ReviewCard } from '@/types/review'
 import { AudioButton } from '@/components/ui/AudioButton'
@@ -11,28 +11,9 @@ interface FlashcardViewerProps {
   onFlip: () => void
 }
 
-/** Pick a font-size class based on character length to prevent overflow. */
-function frontTextSize(text: string) {
-  const len = text.length
-  if (len <= 8) return 'text-4xl'
-  if (len <= 14) return 'text-3xl'
-  if (len <= 20) return 'text-2xl'
-  return 'text-xl'
-}
-
-function backTextSize(text: string) {
-  const len = text.length
-  if (len <= 12) return 'text-3xl'
-  if (len <= 24) return 'text-2xl'
-  return 'text-xl'
-}
-
 export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProps) {
   const { autoPlayAudio } = useSettingsStore()
   const { play } = useAudio({ word: card.front, audioUrl: card.audio_url })
-
-  const frontSize = useMemo(() => frontTextSize(card.front), [card.front])
-  const backSize = useMemo(() => backTextSize(card.back), [card.back])
 
   useEffect(() => {
     if (isFlipped && autoPlayAudio) {
@@ -42,19 +23,19 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
 
   return (
     <div
-      className="flip-card w-full max-w-lg mx-auto cursor-pointer select-none"
+      className="flip-card w-full mx-auto cursor-pointer select-none"
       onClick={onFlip}
       style={{ perspective: 1200 }}
     >
       <motion.div
-        className="relative w-full min-h-[360px]"
+        className="relative w-full min-h-[380px]"
         animate={{ rotateY: isFlipped ? 180 : 0 }}
         transition={{ duration: 0.5, type: 'spring', stiffness: 200, damping: 25 }}
         style={{ transformStyle: 'preserve-3d' }}
       >
         {/* Front */}
         <div
-          className="absolute inset-0 bg-white dark:bg-gray-800/80 rounded-3xl shadow-xl shadow-gray-200/30 dark:shadow-black/20 border border-gray-200/60 dark:border-gray-700/50 flex flex-col items-center justify-center overflow-hidden px-6 py-10"
+          className="absolute inset-0 bg-white dark:bg-gray-800/80 rounded-3xl shadow-xl shadow-gray-200/30 dark:shadow-black/20 border border-gray-200/60 dark:border-gray-700/50 flex flex-col items-center justify-center overflow-hidden px-10 py-10"
           style={{ backfaceVisibility: 'hidden' }}
         >
           {/* Top gradient accent */}
@@ -67,7 +48,7 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
             {card.deck_name}
           </span>
 
-          <h2 className={`${frontSize} font-bold text-gray-900 dark:text-gray-100 text-center leading-snug w-full break-words px-2`}>
+          <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 text-center leading-snug">
             {card.front}
           </h2>
 
@@ -88,7 +69,7 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
 
         {/* Back */}
         <div
-          className="absolute inset-0 bg-white dark:bg-gray-800/80 rounded-3xl shadow-xl shadow-gray-200/30 dark:shadow-black/20 border border-gray-200/60 dark:border-gray-700/50 flex flex-col items-center justify-center overflow-hidden px-6 py-10"
+          className="absolute inset-0 bg-white dark:bg-gray-800/80 rounded-3xl shadow-xl shadow-gray-200/30 dark:shadow-black/20 border border-gray-200/60 dark:border-gray-700/50 flex flex-col items-center justify-center overflow-hidden px-10 py-10"
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
         >
           {/* Top gradient accent */}
@@ -98,7 +79,7 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
             Nghĩa
           </span>
 
-          <h2 className={`${backSize} font-bold text-primary-600 dark:text-primary-400 text-center leading-snug w-full break-words px-2`}>
+          <h2 className="text-3xl font-bold text-primary-600 dark:text-primary-400 text-center leading-snug">
             {card.back}
           </h2>
 
