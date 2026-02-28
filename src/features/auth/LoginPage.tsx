@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAuthStore } from '@/stores/authStore'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { SocialLoginButtons } from './components/SocialLoginButtons'
+
 import { ROUTES } from '@/config/routes'
 import toast from 'react-hot-toast'
 
@@ -64,8 +64,6 @@ export function LoginPage() {
           Đăng nhập
         </Button>
       </form>
-
-      <SocialLoginButtons />
 
       <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
         Chưa có tài khoản?{' '}

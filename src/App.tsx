@@ -11,7 +11,6 @@ import { AuthLayout } from '@/components/layout/AuthLayout'
 import { LoginPage } from '@/features/auth/LoginPage'
 import { SignupPage } from '@/features/auth/SignupPage'
 import { ForgotPasswordPage } from '@/features/auth/ForgotPasswordPage'
-import { AuthCallback } from '@/features/auth/AuthCallback'
 
 // Feature pages
 import { DashboardPage } from '@/features/dashboard/DashboardPage'
@@ -32,7 +31,6 @@ const router = createBrowserRouter([
       { path: '/login', element: <LoginPage /> },
       { path: '/signup', element: <SignupPage /> },
       { path: '/forgot-password', element: <ForgotPasswordPage /> },
-      { path: '/auth/callback', element: <AuthCallback /> },
     ],
   },
   // Protected routes
