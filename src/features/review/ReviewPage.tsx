@@ -13,7 +13,6 @@ import { ReviewProgress } from './components/ReviewProgress'
 import { SessionSummary } from './components/SessionSummary'
 import { Button } from '@/components/ui/Button'
 import { PageSpinner } from '@/components/shared/LoadingSpinner'
-import { EmptyState } from '@/components/shared/EmptyState'
 import { ROUTES } from '@/config/routes'
 import type { Rating } from '@/types/review'
 import toast from 'react-hot-toast'
@@ -102,13 +101,17 @@ export function ReviewPage() {
 
   if (queue.length === 0) {
     return (
-      <div className="max-w-lg mx-auto py-12">
-        <EmptyState
-          title="Không có thẻ nào cần ôn"
-          description={deckId ? 'Bộ từ này chưa có thẻ hoặc bạn đã ôn hết rồi!' : 'Tất cả các bộ từ đều đã được ôn tập. Quay lại sau nhé!'}
-          actionLabel="Về Dashboard"
-          onAction={() => navigate(ROUTES.DASHBOARD)}
-        />
+      <div className="max-w-lg mx-auto py-16 flex flex-col items-center text-center px-4">
+        <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 dark:from-emerald-900/30 dark:to-emerald-800/20 flex items-center justify-center mb-6">
+          <svg className="w-10 h-10 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Không có thẻ nào cần ôn</h3>
+        <p className="text-gray-500 dark:text-gray-400 max-w-sm mb-8">
+          {deckId ? 'Bộ từ này chưa có thẻ hoặc bạn đã ôn hết rồi!' : 'Tất cả các bộ từ đều đã được ôn tập. Quay lại sau nhé!'}
+        </p>
+        <Button onClick={() => navigate(ROUTES.DASHBOARD)}>Về Dashboard</Button>
       </div>
     )
   }
@@ -134,13 +137,18 @@ export function ReviewPage() {
     <div className="max-w-lg mx-auto py-4">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <Button variant="ghost" size="sm" onClick={() => navigate(-1)}>
-          <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Thoat
-        </Button>
-        <span className="text-sm text-gray-500">{currentCard.deck_name}</span>
+          Thoát
+        </button>
+        <span className="inline-flex px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700/50 text-xs font-medium text-gray-500 dark:text-gray-400">
+          {currentCard.deck_name}
+        </span>
       </div>
 
       {/* Progress */}
@@ -158,14 +166,14 @@ export function ReviewPage() {
       {/* Rating buttons - only show when flipped */}
       {isFlipped && (
         <div className="mt-6">
-          <p className="text-center text-sm text-gray-400 mb-3">Bạn nhớ từ này thế nào?</p>
+          <p className="text-center text-sm text-gray-400 dark:text-gray-500 mb-4">Bạn nhớ từ này thế nào?</p>
           <RatingButtons onRate={handleRate} disabled={rating} />
         </div>
       )}
 
       {!isFlipped && (
-        <p className="text-center text-sm text-gray-400 mt-4">
-          Nhấn <kbd className="px-2 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-xs">Space</kbd> hoặc click để lật thẻ
+        <p className="text-center text-sm text-gray-400 dark:text-gray-500 mt-4">
+          Nhấn <kbd className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-md text-xs font-mono border border-gray-200 dark:border-gray-600">Space</kbd> hoặc click để lật thẻ
         </p>
       )}
     </div>
