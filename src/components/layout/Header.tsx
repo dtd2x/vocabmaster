@@ -1,13 +1,14 @@
 import { useAuthStore } from '@/stores/authStore'
 import { useUIStore } from '@/stores/uiStore'
 import { ThemeToggle } from '@/components/shared/ThemeToggle'
+import { UserAvatar } from '@/components/shared/UserAvatar'
 
 export function Header() {
   const { profile } = useAuthStore()
   const { toggleSidebar } = useUIStore()
 
   return (
-    <header className="lg:hidden sticky top-0 z-30 bg-white dark:bg-sidebar border-b border-border-light dark:border-border-dark">
+    <header className="lg:hidden sticky top-0 z-30 bg-white dark:bg-sidebar-dark border-b border-border-light dark:border-border-dark">
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-3">
           <button
@@ -23,9 +24,7 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <div className="w-8 h-8 rounded-lg bg-primary-500 flex items-center justify-center text-white text-sm font-semibold">
-            {profile?.display_name?.charAt(0)?.toUpperCase() || 'U'}
-          </div>
+          <UserAvatar avatarUrl={profile?.avatar_url} displayName={profile?.display_name} size="sm" />
         </div>
       </div>
     </header>

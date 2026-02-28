@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/stores/authStore'
 import { ThemeToggle } from '@/components/shared/ThemeToggle'
+import { UserAvatar } from '@/components/shared/UserAvatar'
 import { getLevelInfo } from '@/lib/xp'
 import { ROUTES } from '@/config/routes'
 
@@ -39,9 +40,7 @@ export function Sidebar() {
       <div className="px-3 mb-3">
         <div className="px-3 py-3 rounded-xl bg-white dark:bg-sidebar-dark-hover shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:shadow-none">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-primary-500 flex items-center justify-center text-white text-sm font-semibold shrink-0">
-              {profile?.display_name?.charAt(0)?.toUpperCase() || 'U'}
-            </div>
+            <UserAvatar avatarUrl={profile?.avatar_url} displayName={profile?.display_name} />
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
                 {profile?.display_name || 'User'}

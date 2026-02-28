@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { useUIStore } from '@/stores/uiStore'
 import { useAuthStore } from '@/stores/authStore'
+import { UserAvatar } from '@/components/shared/UserAvatar'
 import { getLevelInfo } from '@/lib/xp'
 import { ROUTES } from '@/config/routes'
 
@@ -66,9 +67,7 @@ export function MobileNav() {
               <div className="px-3 py-3 border-b border-gray-200/70 dark:border-sidebar-dark-hover">
                 <div className="px-3 py-3 rounded-xl bg-white dark:bg-sidebar-dark-hover shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:shadow-none">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-primary-500 flex items-center justify-center text-white text-sm font-semibold">
-                      {profile?.display_name?.charAt(0)?.toUpperCase() || 'U'}
-                    </div>
+                    <UserAvatar avatarUrl={profile?.avatar_url} displayName={profile?.display_name} />
                     <div>
                       <p className="text-sm font-semibold text-gray-900 dark:text-white">{profile?.display_name || 'User'}</p>
                       <p className="text-xs text-gray-500 dark:text-sidebar-dark-text">Level {levelInfo.level} · {stats?.xp ?? 0} XP</p>
