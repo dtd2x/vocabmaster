@@ -35,7 +35,7 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
       >
         {/* Front */}
         <div
-          className="absolute inset-0 bg-white dark:bg-gray-800/80 rounded-3xl shadow-xl shadow-gray-200/30 dark:shadow-black/20 border border-gray-200/60 dark:border-gray-700/50 flex flex-col items-center justify-center overflow-hidden px-10 py-10"
+          className="absolute inset-0 bg-white dark:bg-gray-800/80 rounded-3xl shadow-xl shadow-gray-200/30 dark:shadow-black/20 border border-gray-200/60 dark:border-gray-700/50 flex flex-col items-center justify-center overflow-hidden px-5 sm:px-10 py-10"
           style={{ backfaceVisibility: 'hidden' }}
         >
           {/* Top gradient accent */}
@@ -48,13 +48,13 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
             {card.deck_name}
           </span>
 
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 text-center leading-snug">
+          <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 text-center leading-snug">
             {card.front}
           </h2>
 
           <div className="flex items-center gap-2.5 mt-4">
             {card.pronunciation && (
-              <span className="text-gray-400 dark:text-gray-500 text-base font-light tracking-wide">{card.pronunciation}</span>
+              <span className="text-gray-400 dark:text-gray-500 text-sm sm:text-base font-light tracking-wide">{card.pronunciation}</span>
             )}
             <AudioButton word={card.front} audioUrl={card.audio_url} size="md" />
           </div>
@@ -69,7 +69,7 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
 
         {/* Back */}
         <div
-          className="absolute inset-0 bg-white dark:bg-gray-800/80 rounded-3xl shadow-xl shadow-gray-200/30 dark:shadow-black/20 border border-gray-200/60 dark:border-gray-700/50 flex flex-col items-center justify-center overflow-hidden px-10 py-10"
+          className="absolute inset-0 bg-white dark:bg-gray-800/80 rounded-3xl shadow-xl shadow-gray-200/30 dark:shadow-black/20 border border-gray-200/60 dark:border-gray-700/50 flex flex-col items-center justify-center overflow-hidden px-5 sm:px-10 py-10"
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
         >
           {/* Top gradient accent */}
@@ -79,7 +79,7 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
             Nghĩa
           </span>
 
-          <h2 className="text-3xl font-bold text-primary-600 dark:text-primary-400 text-center leading-snug">
+          <h2 className="text-xl sm:text-3xl font-bold text-primary-600 dark:text-primary-400 text-center leading-snug">
             {card.back}
           </h2>
 
