@@ -18,9 +18,13 @@
   --color-warning-500: #F6B100;
   --color-danger-500: #F8285A;
 
-  --color-sidebar: #1E1E2D;
-  --color-sidebar-hover: #2B2B40;
-  --color-sidebar-text: #9D9DA6;
+  --color-sidebar: #F5F5F7;
+  --color-sidebar-hover: #EAEAED;
+  --color-sidebar-text: #6B7280;
+  --color-sidebar-active: #ffffff;
+  --color-sidebar-dark: #1E1E2D;
+  --color-sidebar-dark-hover: #2B2B40;
+  --color-sidebar-dark-text: #9D9DA6;
   --color-border-light: #F1F1F2;
   --color-border-dark: #2B2B40;
   --color-surface-light: #F9F9F9;
@@ -32,6 +36,16 @@
 @layer base {
   body {
     @apply bg-surface-light text-gray-900 dark:bg-surface-dark dark:text-gray-100;
+  }
+
+  button,
+  [role="button"],
+  a,
+  input[type="checkbox"],
+  input[type="radio"],
+  select,
+  label[for] {
+    cursor: pointer;
   }
 }
 

@@ -255,7 +255,7 @@ export function SmartAddModal({ isOpen, onClose, onImport, deckId }: SmartAddMod
                         </div>
 
                         {/* Card content */}
-                        <div className="flex-1 min-w-0" onClick={() => toggleSelect(i)}>
+                        <div className="flex-1 min-w-0 cursor-pointer" onClick={() => toggleSelect(i)}>
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className="font-semibold text-gray-900 dark:text-gray-100">
                               {card.front}

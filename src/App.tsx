@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { useAuthStore } from '@/stores/authStore'
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary'
@@ -11,6 +11,7 @@ import { AuthLayout } from '@/components/layout/AuthLayout'
 import { LoginPage } from '@/features/auth/LoginPage'
 import { SignupPage } from '@/features/auth/SignupPage'
 import { ForgotPasswordPage } from '@/features/auth/ForgotPasswordPage'
+import { LandingPage } from '@/features/landing/LandingPage'
 
 // Feature pages
 import { DashboardPage } from '@/features/dashboard/DashboardPage'
@@ -24,7 +25,9 @@ import { AchievementsPage } from '@/features/gamification/AchievementsPage'
 import { SettingsPage } from '@/features/settings/SettingsPage'
 
 const router = createBrowserRouter([
-  // Public routes
+  // Landing page (public, standalone)
+  { path: '/', element: <LandingPage /> },
+  // Auth routes
   {
     element: <AuthLayout />,
     children: [
@@ -40,7 +43,6 @@ const router = createBrowserRouter([
       {
         element: <AppLayout />,
         children: [
-          { path: '/', element: <Navigate to="/dashboard" replace /> },
           { path: '/dashboard', element: <DashboardPage /> },
           { path: '/decks', element: <DecksPage /> },
           { path: '/decks/preset', element: <PresetDecksPage /> },

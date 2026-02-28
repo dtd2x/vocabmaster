@@ -1,107 +1,166 @@
-import { NavLink } from 'react-router-dom'
+import { useState } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/stores/authStore'
 import { ThemeToggle } from '@/components/shared/ThemeToggle'
 import { getLevelInfo } from '@/lib/xp'
 import { ROUTES } from '@/config/routes'
 
-const navItems = [
-  { to: ROUTES.DASHBOARD, label: 'Dashboard', icon: DashboardIcon },
-  { to: ROUTES.DECKS, label: 'Bộ từ vựng', icon: DecksIcon },
-  { to: ROUTES.REVIEW, label: 'Ôn tập', icon: ReviewIcon },
-  { to: ROUTES.QUIZ, label: 'Quiz', icon: QuizIcon },
-  { to: ROUTES.ACHIEVEMENTS, label: 'Thành tích', icon: AchievementsIcon },
-  { to: ROUTES.SETTINGS, label: 'Cài đặt', icon: SettingsIcon },
+const learningSubItems = [
+  { to: ROUTES.DECKS, label: 'Bộ từ vựng' },
+  { to: ROUTES.REVIEW, label: 'Ôn tập' },
+  { to: ROUTES.QUIZ, label: 'Quiz' },
 ]
 
 export function Sidebar() {
   const { stats, profile } = useAuthStore()
   const levelInfo = getLevelInfo(stats?.xp ?? 0)
+  const location = useLocation()
+  const [learningOpen, setLearningOpen] = useState(true)
+
+  const learningRoutes = [ROUTES.DECKS, ROUTES.REVIEW, ROUTES.QUIZ]
+  const isLearningActive = learningRoutes.some(route => location.pathname.startsWith(route))
 
   return (
-    <aside className="hidden lg:flex lg:flex-col lg:w-64 bg-sidebar h-screen sticky top-0">
+    <aside className="hidden lg:flex lg:flex-col lg:w-64 bg-sidebar dark:bg-sidebar-dark h-screen sticky top-0 border-r border-gray-200/70 dark:border-sidebar-dark-hover">
       {/* Logo */}
-      <div className="px-6 py-5">
+      <div className="px-5 pt-5 pb-4">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-primary-500 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-full bg-gray-900 dark:bg-primary-500 flex items-center justify-center">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
           </div>
-          <h1 className="text-xl font-bold text-white">VocabMaster</h1>
+          <h1 className="text-lg font-bold text-gray-900 dark:text-white">VocabMaster</h1>
         </div>
       </div>
 
       {/* User info */}
-      <div className="px-4 py-4 mx-3 rounded-lg bg-sidebar-hover mb-2">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-primary-500 flex items-center justify-center text-white font-semibold shrink-0">
-            {profile?.display_name?.charAt(0)?.toUpperCase() || 'U'}
+      <div className="px-3 mb-3">
+        <div className="px-3 py-3 rounded-xl bg-white dark:bg-sidebar-dark-hover shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:shadow-none">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-primary-500 flex items-center justify-center text-white text-sm font-semibold shrink-0">
+              {profile?.display_name?.charAt(0)?.toUpperCase() || 'U'}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                {profile?.display_name || 'User'}
+              </p>
+              <p className="text-xs text-gray-500 dark:text-sidebar-dark-text">
+                Level {levelInfo.level} · {stats?.xp ?? 0} XP
+              </p>
+            </div>
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">
-              {profile?.display_name || 'User'}
-            </p>
-            <p className="text-xs text-sidebar-text">
-              Level {levelInfo.level} &middot; {stats?.xp ?? 0} XP
-            </p>
-          </div>
-        </div>
 
-        {/* Level progress */}
-        <div className="mt-3">
-          <div className="w-full h-1.5 bg-sidebar rounded-full overflow-hidden">
-            <div
-              className="h-full bg-primary-500 rounded-full transition-all duration-500"
-              style={{ width: `${levelInfo.progress * 100}%` }}
-            />
+          {/* Level progress */}
+          <div className="mt-2.5">
+            <div className="w-full h-1.5 bg-gray-100 dark:bg-sidebar-dark rounded-full overflow-hidden">
+              <div
+                className="h-full bg-primary-500 rounded-full transition-all duration-500"
+                style={{ width: `${levelInfo.progress * 100}%` }}
+              />
+            </div>
           </div>
-        </div>
 
-        {/* Streak */}
-        {(stats?.current_streak ?? 0) > 0 && (
-          <div className="mt-2 flex items-center gap-1.5">
-            <span className="text-sm">🔥</span>
-            <span className="text-xs font-medium text-sidebar-text">
-              {stats?.current_streak} ngay streak
-            </span>
-          </div>
-        )}
+          {/* Streak */}
+          {(stats?.current_streak ?? 0) > 0 && (
+            <div className="mt-2 flex items-center gap-1.5">
+              <span className="text-sm fire-animate">🔥</span>
+              <span className="text-xs font-medium text-gray-500 dark:text-sidebar-dark-text">
+                {stats?.current_streak} ngày streak
+              </span>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
-        {navItems.map(({ to, label, icon: Icon }) => (
-          <NavLink
-            key={to}
-            to={to}
-            className={({ isActive }) =>
-              cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 relative',
-                isActive
-                  ? 'bg-sidebar-hover text-white'
-                  : 'text-sidebar-text hover:text-white hover:bg-sidebar-hover'
-              )
-            }
-          >
-            {({ isActive }) => (
-              <>
-                {isActive && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-primary-500 rounded-r-full" />
-                )}
-                <Icon className="w-5 h-5" />
-                {label}
-              </>
+      <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
+        {/* Dashboard */}
+        <SidebarLink to={ROUTES.DASHBOARD} icon={DashboardIcon} label="Dashboard" />
+
+        {/* Học tập group */}
+        <div>
+          <button
+            onClick={() => setLearningOpen(!learningOpen)}
+            className={cn(
+              'w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150',
+              isLearningActive
+                ? 'text-gray-900 dark:text-white'
+                : 'text-gray-500 dark:text-sidebar-dark-text hover:text-gray-900 dark:hover:text-white hover:bg-sidebar-hover dark:hover:bg-sidebar-dark-hover'
             )}
-          </NavLink>
-        ))}
+          >
+            <div className="flex items-center gap-3">
+              <LearningIcon className="w-5 h-5" />
+              <span>Học tập</span>
+            </div>
+            <svg
+              className={cn('w-4 h-4 transition-transform duration-200', learningOpen && 'rotate-180')}
+              fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {learningOpen && (
+            <div className="relative ml-[22px] mt-0.5 space-y-0.5">
+              {/* Vertical tree line */}
+              <div className="absolute left-0 top-0 bottom-[18px] w-px bg-gray-300 dark:bg-sidebar-dark-text/30" />
+
+              {learningSubItems.map((item) => (
+                <div key={item.to} className="relative">
+                  {/* Horizontal branch */}
+                  <div className="absolute left-0 top-1/2 w-3.5 h-px bg-gray-300 dark:bg-sidebar-dark-text/30" />
+                  <NavLink
+                    to={item.to}
+                    className={({ isActive }) =>
+                      cn(
+                        'flex items-center ml-6 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-150',
+                        isActive
+                          ? 'bg-white dark:bg-sidebar-dark-hover text-gray-900 dark:text-white shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:shadow-none'
+                          : 'text-gray-500 dark:text-sidebar-dark-text hover:text-gray-900 dark:hover:text-white hover:bg-sidebar-hover dark:hover:bg-sidebar-dark-hover'
+                      )
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Thành tích */}
+        <SidebarLink to={ROUTES.ACHIEVEMENTS} icon={AchievementsIcon} label="Thành tích" />
+
+        {/* Cài đặt */}
+        <SidebarLink to={ROUTES.SETTINGS} icon={SettingsIcon} label="Cài đặt" />
       </nav>
 
       {/* Bottom */}
-      <div className="px-4 py-3 border-t border-sidebar-hover">
+      <div className="px-4 py-3 border-t border-gray-200/70 dark:border-sidebar-dark-hover">
         <ThemeToggle />
       </div>
     </aside>
+  )
+}
+
+function SidebarLink({ to, icon: Icon, label }: { to: string; icon: React.FC<{ className?: string }>; label: string }) {
+  return (
+    <NavLink
+      to={to}
+      className={({ isActive }) =>
+        cn(
+          'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150',
+          isActive
+            ? 'bg-white dark:bg-sidebar-dark-hover text-gray-900 dark:text-white shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:shadow-none'
+            : 'text-gray-500 dark:text-sidebar-dark-text hover:text-gray-900 dark:hover:text-white hover:bg-sidebar-hover dark:hover:bg-sidebar-dark-hover'
+        )
+      }
+    >
+      <Icon className="w-5 h-5" />
+      {label}
+    </NavLink>
   )
 }
 
@@ -109,31 +168,15 @@ export function Sidebar() {
 function DashboardIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
     </svg>
   )
 }
 
-function DecksIcon({ className }: { className?: string }) {
+function LearningIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-    </svg>
-  )
-}
-
-function ReviewIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-    </svg>
-  )
-}
-
-function QuizIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
     </svg>
   )
 }

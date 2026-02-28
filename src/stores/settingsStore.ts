@@ -20,7 +20,7 @@ interface SettingsState {
 export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
-      theme: 'system',
+      theme: 'light',
       newCardsPerDay: DEFAULT_NEW_CARDS_PER_DAY,
       reviewLimit: DEFAULT_REVIEW_LIMIT,
       dailyGoal: DEFAULT_DAILY_GOAL,

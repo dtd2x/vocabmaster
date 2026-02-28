@@ -24,7 +24,7 @@ export function DashboardPage() {
   const { todayReviews, heatmapData, accuracyData, forecastData, deckProgress, loading } = useStats()
 
   if (loading) {
-    return <LoadingSpinner className="py-20" size="lg" />
+    return <LoadingSpinner className="min-h-[calc(100vh-4rem)] flex items-center justify-center" size="lg" />
   }
 
   const displayName = profile?.display_name || 'ban'
