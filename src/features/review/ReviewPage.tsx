@@ -6,6 +6,7 @@ import { useSettingsStore } from '@/stores/settingsStore'
 import { buildReviewQueue, initializeCardsForUser } from '@/lib/review-queue'
 import { calculateStreak } from '@/lib/streak'
 import { levelFromXP } from '@/lib/xp'
+import { preloadPronunciation } from '@/lib/audio'
 import { supabase } from '@/config/supabase'
 import { FlashcardViewer } from './components/FlashcardViewer'
 import { RatingButtons } from './components/RatingButtons'
@@ -64,6 +65,14 @@ export function ReviewPage() {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isFlipped, flipCard, isSessionComplete])
+
+  // Prefetch audio for upcoming cards (current + next 3)
+  useEffect(() => {
+    const ahead = queue.slice(currentIndex, currentIndex + 4)
+    for (const card of ahead) {
+      preloadPronunciation(card.front, card.audio_url)
+    }
+  }, [queue, currentIndex])
 
   const handleRate = async (r: Rating) => {
     if (!user || !stats || rating) return

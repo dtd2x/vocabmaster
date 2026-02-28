@@ -10,6 +10,9 @@ interface DictionaryAudioResult {
 // In-memory cache to avoid repeat network calls
 const audioCache = new Map<string, DictionaryAudioResult>()
 
+// Preloaded HTMLAudioElement cache (url -> ready Audio element)
+const preloadedAudio = new Map<string, HTMLAudioElement>()
+
 /**
  * Fetch both US and UK audio URLs from Free Dictionary API.
  */
@@ -64,13 +67,27 @@ export async function fetchDictionaryAudioUrl(
 }
 
 /**
- * Play audio from a URL. Returns a promise that resolves when done.
+ * Preload an audio element so it's ready for instant playback.
+ */
+function preloadAudioElement(url: string): HTMLAudioElement {
+  if (preloadedAudio.has(url)) return preloadedAudio.get(url)!
+
+  const audio = new Audio()
+  audio.preload = 'auto'
+  audio.src = url
+  preloadedAudio.set(url, audio)
+  return audio
+}
+
+/**
+ * Play audio from a URL. Uses preloaded element if available.
  */
 export function playAudioFromUrl(url: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const audio = new Audio(url)
-    audio.addEventListener('ended', () => resolve())
-    audio.addEventListener('error', () => reject(new Error('Audio playback failed')))
+    const audio = preloadedAudio.get(url) ?? new Audio(url)
+    audio.currentTime = 0
+    audio.addEventListener('ended', () => resolve(), { once: true })
+    audio.addEventListener('error', () => reject(new Error('Audio playback failed')), { once: true })
     audio.play().catch(reject)
   })
 }
@@ -133,4 +150,29 @@ export async function playPronunciation(
 
   // 3. Fallback to Web Speech API
   await playWithSpeechSynthesis(word, lang)
+}
+
+/**
+ * Eagerly preload audio for a word so playback is instant when the user clicks.
+ * Call this as early as possible (e.g. when a card becomes visible).
+ */
+export async function preloadPronunciation(
+  word: string,
+  storedAudioUrl: string | null,
+  accent: Accent = 'us',
+): Promise<void> {
+  // Preload stored URL if available
+  if (storedAudioUrl) {
+    preloadAudioElement(storedAudioUrl)
+  }
+
+  // Prefetch dictionary API audio URL and preload it
+  try {
+    const dictUrl = await fetchDictionaryAudioUrl(word, accent)
+    if (dictUrl) {
+      preloadAudioElement(dictUrl)
+    }
+  } catch {
+    // Ignore preload errors silently
+  }
 }

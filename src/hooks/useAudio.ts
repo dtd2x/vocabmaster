@@ -1,5 +1,5 @@
-import { useState, useCallback, useRef } from 'react'
-import { playPronunciation } from '@/lib/audio'
+import { useState, useCallback, useRef, useEffect } from 'react'
+import { playPronunciation, preloadPronunciation } from '@/lib/audio'
 import { useSettingsStore } from '@/stores/settingsStore'
 
 interface UseAudioOptions {
@@ -14,6 +14,13 @@ export function useAudio({ word, audioUrl = null, lang }: UseAudioOptions) {
   const accent = useSettingsStore((s) => s.accent)
 
   const effectiveLang = lang ?? (accent === 'uk' ? 'en-GB' : 'en-US')
+
+  // Preload audio as soon as the word is known (not on click)
+  useEffect(() => {
+    if (word) {
+      preloadPronunciation(word, audioUrl ?? null, accent)
+    }
+  }, [word, audioUrl, accent])
 
   const play = useCallback(async () => {
     if (playingRef.current) return
