@@ -42,17 +42,17 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-400 via-indigo-500 to-violet-500" />
 
           {/* Subtle background pattern */}
-          <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)', backgroundSize: '24px 24px' }} />
+          <div className="absolute inset-0 pointer-events-none opacity-[0.02] dark:opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)', backgroundSize: '24px 24px' }} />
 
-          <span className="inline-flex px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700/50 text-[11px] font-medium text-gray-400 dark:text-gray-500 mb-5 tracking-wide uppercase">
+          <span className="relative inline-flex px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700/50 text-[11px] font-medium text-gray-400 dark:text-gray-500 mb-5 tracking-wide uppercase">
             {card.deck_name}
           </span>
 
-          <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 text-center leading-snug">
+          <h2 className="relative text-2xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 text-center leading-snug">
             {card.front}
           </h2>
 
-          <div className="flex items-center gap-2.5 mt-4">
+          <div className="relative flex items-center gap-2.5 mt-4">
             {card.pronunciation && (
               <span className="text-gray-400 dark:text-gray-500 text-sm sm:text-base font-light tracking-wide">{card.pronunciation}</span>
             )}
