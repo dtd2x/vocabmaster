@@ -68,16 +68,16 @@ export function MatchingGame({ pairs, onComplete }: MatchingGameProps) {
         <p className="text-sm text-gray-500 dark:text-gray-400">Nối từ tiếng Anh với nghĩa tiếng Việt</p>
         <span className="text-sm font-semibold text-primary-500">{matched.size}/{gamePairs.length}</span>
       </div>
-      <div className="w-full h-1.5 bg-border-light dark:bg-border-dark rounded-full mb-6 overflow-hidden">
+      <div className="w-full h-2 bg-border-light dark:bg-border-dark rounded-full mb-6 overflow-hidden">
         <div
           className="h-full bg-primary-500 rounded-full transition-all duration-500"
           style={{ width: `${(matched.size / gamePairs.length) * 100}%` }}
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-5 sm:gap-6">
         {/* English column */}
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           <p className="text-xs text-gray-400 uppercase tracking-widest mb-3 text-center font-medium">Tiếng Anh</p>
           {shuffledFronts.map(pair => (
             <motion.button
@@ -86,7 +86,7 @@ export function MatchingGame({ pairs, onComplete }: MatchingGameProps) {
               disabled={matched.has(pair.id)}
               whileTap={{ scale: 0.97 }}
               className={cn(
-                'w-full py-3.5 px-4 rounded-xl border-2 text-sm font-medium transition-all text-center',
+                'w-full py-5 px-5 rounded-xl border-2 text-base font-medium transition-all text-center',
                 matched.has(pair.id) && 'border-success-500 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 opacity-70',
                 selectedFront === pair.id && !matched.has(pair.id) && 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300',
                 wrong?.front === pair.id && 'border-danger-500 bg-red-50 dark:bg-red-900/20',
@@ -99,7 +99,7 @@ export function MatchingGame({ pairs, onComplete }: MatchingGameProps) {
         </div>
 
         {/* Vietnamese column */}
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           <p className="text-xs text-gray-400 uppercase tracking-widest mb-3 text-center font-medium">Tiếng Việt</p>
           {shuffledBacks.map(pair => (
             <motion.button
@@ -108,7 +108,7 @@ export function MatchingGame({ pairs, onComplete }: MatchingGameProps) {
               disabled={matched.has(pair.id)}
               whileTap={{ scale: 0.97 }}
               className={cn(
-                'w-full py-3.5 px-4 rounded-xl border-2 text-sm font-medium transition-all text-center',
+                'w-full py-5 px-5 rounded-xl border-2 text-base font-medium transition-all text-center',
                 matched.has(pair.id) && 'border-success-500 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 opacity-70',
                 selectedBack === pair.id && !matched.has(pair.id) && 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300',
                 wrong?.back === pair.id && 'border-danger-500 bg-red-50 dark:bg-red-900/20',

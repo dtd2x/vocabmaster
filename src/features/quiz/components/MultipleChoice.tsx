@@ -35,16 +35,18 @@ export function MultipleChoice({ question, onAnswer }: MultipleChoiceProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Question card */}
-      <div className="bg-white dark:bg-sidebar rounded-xl border border-border-light dark:border-border-dark p-8 text-center">
-        <p className="text-xs text-gray-400 uppercase tracking-widest mb-4 font-medium">Từ này nghĩa là gì?</p>
-        <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{question.question}</h2>
-        <AudioButton word={question.question} audioUrl={question.audioUrl} size="md" className="mx-auto" />
+      <div className="bg-[#2e3856] rounded-2xl p-10 sm:p-12 text-center shadow-xl" style={{ aspectRatio: '16 / 7' }}>
+        <div className="h-full flex flex-col items-center justify-center">
+          <p className="text-xs text-gray-400 uppercase tracking-widest mb-5 font-medium">Từ này nghĩa là gì?</p>
+          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-5">{question.question}</h2>
+          <AudioButton word={question.question} audioUrl={question.audioUrl} size="md" className="text-gray-400 hover:text-white hover:bg-white/10 dark:hover:text-white dark:hover:bg-white/10" />
+        </div>
       </div>
 
       {/* Options */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         {question.options?.map((option, i) => {
           const isCorrect = option === question.correctAnswer
           const isSelected = option === selected
@@ -59,7 +61,7 @@ export function MultipleChoice({ question, onAnswer }: MultipleChoiceProps) {
               onClick={() => handleSelect(option)}
               disabled={revealed}
               className={cn(
-                'w-full p-4 rounded-xl text-left font-medium transition-all duration-200 border-2 flex items-center gap-3',
+                'w-full py-5 px-5 rounded-xl text-left font-medium transition-all duration-200 border-2 flex items-center gap-4',
                 !revealed && 'border-border-light dark:border-border-dark bg-white dark:bg-sidebar hover:border-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20',
                 revealed && isCorrect && 'border-success-500 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300',
                 revealed && isSelected && !isCorrect && 'border-danger-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300',
@@ -67,7 +69,7 @@ export function MultipleChoice({ question, onAnswer }: MultipleChoiceProps) {
               )}
             >
               <span className={cn(
-                'w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 transition-colors',
+                'w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0 transition-colors',
                 !revealed && 'bg-surface-light dark:bg-sidebar-hover text-gray-500',
                 revealed && isCorrect && 'bg-success-500 text-white',
                 revealed && isSelected && !isCorrect && 'bg-danger-500 text-white',
@@ -75,7 +77,7 @@ export function MultipleChoice({ question, onAnswer }: MultipleChoiceProps) {
               )}>
                 {label}
               </span>
-              <span className="text-gray-800 dark:text-gray-200 text-sm">{option}</span>
+              <span className="text-gray-800 dark:text-gray-200 text-base">{option}</span>
             </motion.button>
           )
         })}

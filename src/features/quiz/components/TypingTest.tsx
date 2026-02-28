@@ -60,15 +60,17 @@ export function TypingTest({ question, onAnswer }: TypingTestProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Question card */}
-      <div className="bg-white dark:bg-sidebar rounded-xl border border-border-light dark:border-border-dark p-8 text-center">
-        <p className="text-xs text-gray-400 uppercase tracking-widest mb-4 font-medium">Dịch sang tiếng Anh</p>
-        <h2 className="text-4xl font-bold text-gray-900 dark:text-white">{question.question}</h2>
+      <div className="bg-[#2e3856] rounded-2xl p-10 sm:p-12 text-center shadow-xl" style={{ aspectRatio: '16 / 7' }}>
+        <div className="h-full flex flex-col items-center justify-center">
+          <p className="text-xs text-gray-400 uppercase tracking-widest mb-5 font-medium">Dịch sang tiếng Anh</p>
+          <h2 className="text-4xl sm:text-5xl font-bold text-white">{question.question}</h2>
+        </div>
       </div>
 
       {/* Input */}
-      <form onSubmit={handleSubmit} className="space-y-3">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
           value={input}
@@ -76,7 +78,7 @@ export function TypingTest({ question, onAnswer }: TypingTestProps) {
           placeholder="Nhập từ tiếng Anh..."
           autoFocus
           disabled={result !== null}
-          className={`w-full px-5 py-4 rounded-xl border-2 text-lg text-center font-medium focus:outline-none transition-colors
+          className={`w-full px-6 py-5 rounded-xl border-2 text-lg text-center font-medium focus:outline-none transition-colors
             ${result === 'correct' ? 'border-success-500 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300' : ''}
             ${result === 'incorrect' ? 'border-danger-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300' : ''}
             ${result === null ? 'border-border-light dark:border-border-dark bg-white dark:bg-sidebar focus:border-primary-500' : ''}
@@ -87,7 +89,7 @@ export function TypingTest({ question, onAnswer }: TypingTestProps) {
           <motion.div
             initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-danger-500/30"
+            className="flex items-center justify-center gap-2 py-4 px-5 rounded-xl bg-red-50 dark:bg-red-900/20 border border-danger-500/30"
           >
             <p className="text-sm text-red-600 dark:text-red-400">
               Đáp án: <strong className="text-red-700 dark:text-red-300">{question.correctAnswer}</strong>

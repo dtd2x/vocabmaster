@@ -104,7 +104,7 @@ export function QuizSessionPage() {
     const isGood = accuracy >= 80
 
     return (
-      <div className="max-w-lg mx-auto py-10">
+      <div className="max-w-xl mx-auto py-10 px-4 sm:px-6">
         <Card padding="none" className="overflow-hidden">
           {/* Top banner */}
           <div className={`px-8 py-8 text-center ${isGood ? 'bg-success-500/10 dark:bg-success-500/5' : 'bg-primary-50 dark:bg-primary-900/10'}`}>
@@ -156,7 +156,7 @@ export function QuizSessionPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <Button variant="ghost" size="sm" onClick={() => navigate('/quiz')}>
