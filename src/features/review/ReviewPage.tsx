@@ -143,7 +143,7 @@ export function ReviewPage() {
   if (!currentCard) return null
 
   return (
-    <div className="w-full mx-auto py-4 px-2 sm:px-4">
+    <div className="max-w-4xl w-full mx-auto py-6 px-4 sm:px-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <button
@@ -164,7 +164,7 @@ export function ReviewPage() {
       <ReviewProgress current={currentIndex} total={queue.length} />
 
       {/* Flashcard */}
-      <div className="my-8">
+      <div className="mt-8 mb-6">
         <FlashcardViewer
           card={currentCard}
           isFlipped={isFlipped}
@@ -175,13 +175,12 @@ export function ReviewPage() {
       {/* Rating buttons - only show when flipped */}
       {isFlipped && (
         <div className="mt-6">
-          <p className="text-center text-sm text-gray-400 dark:text-gray-500 mb-4">Bạn nhớ từ này thế nào?</p>
           <RatingButtons onRate={handleRate} disabled={rating} />
         </div>
       )}
 
       {!isFlipped && (
-        <p className="text-center text-sm text-gray-400 dark:text-gray-500 mt-2">
+        <p className="text-center text-sm text-gray-400 dark:text-gray-500 mt-4">
           Hoặc nhấn <kbd className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-md text-xs font-mono border border-gray-200 dark:border-gray-600">Space</kbd>
         </p>
       )}
