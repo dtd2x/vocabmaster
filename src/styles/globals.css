@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary-50: #eef2ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #1B84FF;
+  --color-primary-600: #1574e0;
+  --color-primary-700: #1064c2;
+  --color-primary-800: #0b54a3;
+  --color-primary-900: #064585;
+
+  --color-success-500: #17C653;
+  --color-warning-500: #F6B100;
+  --color-danger-500: #F8285A;
+
+  --color-sidebar: #1E1E2D;
+  --color-sidebar-hover: #2B2B40;
+  --color-sidebar-text: #9D9DA6;
+  --color-border-light: #F1F1F2;
+  --color-border-dark: #2B2B40;
+  --color-surface-light: #F9F9F9;
+  --color-surface-dark: #1B1B29;
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-surface-light text-gray-900 dark:bg-surface-dark dark:text-gray-100;
+  }
+}
+
+/* Card flip animation */
+.flip-card {
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.flip-card-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  backface-visibility: hidden;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Streak fire animation */
+@keyframes fire-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.fire-animate {
+  animation: fire-pulse 1.5s ease-in-out infinite;
+}
+
+/* Page fade-in */
+@keyframes page-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-page-in {
+  animation: page-fade-in 0.25s ease-out forwards;
+}
+
+/* Heatmap colors */
+.heatmap-0 { @apply bg-gray-100 dark:bg-gray-800; }
+.heatmap-1 { @apply bg-primary-100 dark:bg-primary-900; }
+.heatmap-2 { @apply bg-primary-300 dark:bg-primary-700; }
+.heatmap-3 { @apply bg-primary-500 dark:bg-primary-500; }
+.heatmap-4 { @apply bg-primary-700 dark:bg-primary-300; }

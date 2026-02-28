@@ -1,0 +1,18 @@
+export const ROUTES = {
+  LOGIN: '/login',
+  SIGNUP: '/signup',
+  FORGOT_PASSWORD: '/forgot-password',
+  AUTH_CALLBACK: '/auth/callback',
+  DASHBOARD: '/dashboard',
+  DECKS: '/decks',
+  PRESET_DECKS: '/decks/preset',
+  DECK_DETAIL: '/decks/:deckId',
+  REVIEW: '/review',
+  REVIEW_DECK: '/review/:deckId',
+  REVIEW_SUMMARY: '/review/summary',
+  QUIZ: '/quiz',
+  QUIZ_SESSION: '/quiz/:mode/:deckId',
+  QUIZ_RESULT: '/quiz/result',
+  ACHIEVEMENTS: '/achievements',
+  SETTINGS: '/settings',
+} as const
