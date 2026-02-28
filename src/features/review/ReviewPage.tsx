@@ -181,8 +181,8 @@ export function ReviewPage() {
       )}
 
       {!isFlipped && (
-        <p className="text-center text-sm text-gray-400 dark:text-gray-500 mt-4">
-          Nhấn <kbd className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-md text-xs font-mono border border-gray-200 dark:border-gray-600">Space</kbd> hoặc click để lật thẻ
+        <p className="text-center text-sm text-gray-400 dark:text-gray-500 mt-2">
+          Hoặc nhấn <kbd className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-md text-xs font-mono border border-gray-200 dark:border-gray-600">Space</kbd>
         </p>
       )}
     </div>
