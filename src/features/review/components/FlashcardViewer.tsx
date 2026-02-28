@@ -22,20 +22,19 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
   }, [isFlipped]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const cardFace =
-    'absolute inset-0 bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-xl border border-gray-200/60 dark:border-gray-700/50 flex flex-col overflow-hidden'
+    'absolute inset-0 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200/60 dark:border-gray-700/50 flex flex-col overflow-hidden'
 
   return (
     <div
-      className="flip-card w-full cursor-pointer select-none"
+      className="w-full cursor-pointer select-none"
       onClick={onFlip}
       style={{ perspective: 1600 }}
     >
-      {/* Aspect ratio wrapper: 56.25% = 16:9, 50% = 2:1 */}
       <motion.div
-        className="relative w-full"
-        style={{ paddingBottom: '50%', transformStyle: 'preserve-3d' }}
+        className="relative w-full h-[340px] sm:h-[380px]"
         animate={{ rotateY: isFlipped ? 180 : 0 }}
         transition={{ duration: 0.5, type: 'spring', stiffness: 200, damping: 25 }}
+        style={{ transformStyle: 'preserve-3d' }}
       >
         {/* ===== FRONT ===== */}
         <div className={cardFace} style={{ backfaceVisibility: 'hidden' }}>
@@ -49,7 +48,7 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
 
           {/* Center content */}
           <div className="flex-1 flex flex-col items-center justify-center px-8 sm:px-16">
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-gray-100 text-center leading-tight">
+            <h2 className="text-3xl sm:text-5xl font-bold text-gray-900 dark:text-gray-100 text-center leading-tight">
               {card.front}
             </h2>
             {card.pronunciation && (
@@ -60,7 +59,7 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
           </div>
 
           {/* Bottom bar */}
-          <div className="shrink-0 py-2.5 sm:py-3 bg-gradient-to-r from-primary-500 via-indigo-500 to-violet-500 text-center">
+          <div className="shrink-0 py-2.5 bg-gradient-to-r from-primary-500 via-indigo-500 to-violet-500 text-center">
             <span className="text-white/90 text-xs sm:text-sm font-medium">Nhấn vào thẻ để lật 👆</span>
           </div>
         </div>
@@ -76,7 +75,7 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
               Nghĩa
             </span>
 
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-primary-600 dark:text-primary-400 text-center leading-tight">
+            <h2 className="text-2xl sm:text-4xl font-bold text-primary-600 dark:text-primary-400 text-center leading-tight">
               {card.back}
             </h2>
 
