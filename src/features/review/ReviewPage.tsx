@@ -143,7 +143,7 @@ export function ReviewPage() {
   if (!currentCard) return null
 
   return (
-    <div className="max-w-2xl mx-auto py-4 px-4">
+    <div className="max-w-4xl mx-auto py-4 px-4 sm:px-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <button
