@@ -3,24 +3,29 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
 import { AudioButton } from '@/components/ui/AudioButton'
-import { generateVocabularyCards, type GeneratedCard } from '@/lib/gemini'
+import { generateCards, type GeneratedCard, type GeneratedJapaneseCard } from '@/lib/gemini'
 import type { CreateCardInput } from '@/types/card'
 import toast from 'react-hot-toast'
+
+type PreviewCard = GeneratedCard | GeneratedJapaneseCard
 
 interface SmartAddModalProps {
   isOpen: boolean
   onClose: () => void
   onImport: (cards: CreateCardInput[]) => Promise<unknown>
   deckId: string
+  language?: string
 }
 
-export function SmartAddModal({ isOpen, onClose, onImport, deckId }: SmartAddModalProps) {
+export function SmartAddModal({ isOpen, onClose, onImport, deckId, language = 'en' }: SmartAddModalProps) {
   const [input, setInput] = useState('')
   const [generating, setGenerating] = useState(false)
   const [importing, setImporting] = useState(false)
-  const [preview, setPreview] = useState<GeneratedCard[]>([])
+  const [preview, setPreview] = useState<PreviewCard[]>([])
   const [selected, setSelected] = useState<Set<number>>(new Set())
   const [editingIndex, setEditingIndex] = useState<number | null>(null)
+
+  const isJapanese = language === 'ja'
 
   const handleGenerate = async () => {
     const words = input
@@ -41,7 +46,7 @@ export function SmartAddModal({ isOpen, onClose, onImport, deckId }: SmartAddMod
     setGenerating(true)
     setPreview([])
     try {
-      const cards = await generateVocabularyCards(words)
+      const cards = await generateCards(words, language)
       setPreview(cards)
       setSelected(new Set(cards.map((_, i) => i)))
       toast.success(`Đã tạo ${cards.length} thẻ từ vựng!`)
@@ -70,7 +75,7 @@ export function SmartAddModal({ isOpen, onClose, onImport, deckId }: SmartAddMod
     }
   }
 
-  const updateCard = (index: number, field: keyof GeneratedCard, value: string) => {
+  const updateCard = (index: number, field: string, value: string) => {
     setPreview(prev => prev.map((card, i) =>
       i === index ? { ...card, [field]: value } : card
     ))
@@ -79,14 +84,22 @@ export function SmartAddModal({ isOpen, onClose, onImport, deckId }: SmartAddMod
   const handleImport = async () => {
     const cardsToImport: CreateCardInput[] = preview
       .filter((_, i) => selected.has(i))
-      .map(card => ({
-        deck_id: deckId,
-        front: card.front,
-        back: card.back,
-        example_sentence: card.example_sentence,
-        pronunciation: card.pronunciation,
-        audio_url: card.audio_url ?? null,
-      }))
+      .map(card => {
+        const input: CreateCardInput = {
+          deck_id: deckId,
+          front: card.front,
+          back: card.back,
+          example_sentence: card.example_sentence,
+          pronunciation: card.pronunciation,
+          audio_url: card.audio_url ?? null,
+        }
+
+        if (isJapanese && 'hiragana' in card && card.hiragana) {
+          input.extra_fields = { hiragana: card.hiragana }
+        }
+
+        return input
+      })
 
     if (cardsToImport.length === 0) {
       toast.error('Vui lòng chọn ít nhất 1 thẻ')
@@ -119,6 +132,14 @@ export function SmartAddModal({ isOpen, onClose, onImport, deckId }: SmartAddMod
     }
   }
 
+  const placeholderText = isJapanese
+    ? `Nhập từ tiếng Nhật, romaji hoặc tiếng Việt, mỗi từ một dòng hoặc cách nhau bằng dấu phẩy.\n\nVí dụ:\n食べる, 飲む, 行く\nhoặc:\ntaberu\nnomu\niku\nhoặc:\năn\nuống\nđi`
+    : `Nhập từ tiếng Anh hoặc tiếng Việt, mỗi từ một dòng hoặc cách nhau bằng dấu phẩy.\n\nVí dụ:\nabandon, achieve, benefit\nhoặc:\ntừ bỏ\nđạt được\nlợi ích`
+
+  const helpText = isJapanese
+    ? 'Hỗ trợ tiếng Nhật, romaji & tiếng Việt. Tối đa 30 từ/lần. AI sẽ tự động tạo kanji, hiragana, romaji, nghĩa và câu ví dụ.'
+    : 'Hỗ trợ tiếng Anh & tiếng Việt. Tối đa 30 từ/lần. AI sẽ tự động tạo nghĩa, phiên âm và câu ví dụ.'
+
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title="Thêm từ vựng thông minh (AI)" size="lg">
       <div className="space-y-4">
@@ -132,13 +153,13 @@ export function SmartAddModal({ isOpen, onClose, onImport, deckId }: SmartAddMod
               <textarea
                 value={input}
                 onChange={e => setInput(e.target.value)}
-                placeholder={`Nhập từ tiếng Anh hoặc tiếng Việt, mỗi từ một dòng hoặc cách nhau bằng dấu phẩy.\n\nVí dụ:\nabandon, achieve, benefit\nhoặc:\ntừ bỏ\nđạt được\nlợi ích`}
+                placeholder={placeholderText}
                 rows={8}
                 className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
                 autoFocus
               />
               <p className="text-xs text-gray-400 mt-1">
-                Hỗ trợ tiếng Anh & tiếng Việt. Tối đa 30 từ/lần. AI sẽ tự động tạo nghĩa, phiên âm và câu ví dụ.
+                {helpText}
               </p>
             </div>
 
@@ -206,7 +227,7 @@ export function SmartAddModal({ isOpen, onClose, onImport, deckId }: SmartAddMod
                             value={card.front}
                             onChange={e => updateCard(i, 'front', e.target.value)}
                             className="px-2 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary-500"
-                            placeholder="Từ tiếng Anh"
+                            placeholder={isJapanese ? 'Kanji / Từ tiếng Nhật' : 'Từ tiếng Anh'}
                           />
                           <input
                             value={card.back}
@@ -215,11 +236,19 @@ export function SmartAddModal({ isOpen, onClose, onImport, deckId }: SmartAddMod
                             placeholder="Nghĩa tiếng Việt"
                           />
                         </div>
+                        {isJapanese && 'hiragana' in card && (
+                          <input
+                            value={card.hiragana ?? ''}
+                            onChange={e => updateCard(i, 'hiragana', e.target.value)}
+                            className="w-full px-2 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                            placeholder="Hiragana"
+                          />
+                        )}
                         <input
                           value={card.pronunciation}
                           onChange={e => updateCard(i, 'pronunciation', e.target.value)}
                           className="w-full px-2 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary-500"
-                          placeholder="Phiên âm IPA"
+                          placeholder={isJapanese ? 'Romaji' : 'Phiên âm IPA'}
                         />
                         <input
                           value={card.example_sentence}
@@ -260,10 +289,20 @@ export function SmartAddModal({ isOpen, onClose, onImport, deckId }: SmartAddMod
                             <span className="font-semibold text-gray-900 dark:text-gray-100">
                               {card.front}
                             </span>
+                            {isJapanese && 'hiragana' in card && card.hiragana && (
+                              <span className="text-xs text-gray-500 dark:text-gray-400">
+                                【{card.hiragana}】
+                              </span>
+                            )}
                             {card.pronunciation && (
                               <span className="text-xs text-gray-400">{card.pronunciation}</span>
                             )}
-                            <AudioButton word={card.front} audioUrl={card.audio_url} size="sm" />
+                            <AudioButton
+                              word={card.front}
+                              audioUrl={card.audio_url}
+                              size="sm"
+                              lang={isJapanese ? 'ja-JP' : undefined}
+                            />
                           </div>
                           <p className="text-sm text-primary-600 dark:text-primary-400 mt-0.5">
                             {card.back}

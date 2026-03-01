@@ -1,6 +1,7 @@
 const DICTIONARY_API = 'https://api.dictionaryapi.dev/api/v2/entries/en'
 
 export type Accent = 'us' | 'uk'
+export type AudioLang = 'en-US' | 'en-GB' | 'vi-VN' | 'ja-JP'
 
 interface DictionaryAudioResult {
   us: string | null
@@ -97,7 +98,7 @@ export function playAudioFromUrl(url: string): Promise<void> {
  */
 export function playWithSpeechSynthesis(
   text: string,
-  lang: 'en-US' | 'en-GB' | 'vi-VN' = 'en-US',
+  lang: AudioLang = 'en-US',
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     if (!window.speechSynthesis) {
@@ -109,7 +110,7 @@ export function playWithSpeechSynthesis(
 
     const utterance = new SpeechSynthesisUtterance(text)
     utterance.lang = lang
-    utterance.rate = 0.9
+    utterance.rate = lang === 'ja-JP' ? 0.85 : 0.9
     utterance.onend = () => resolve()
     utterance.onerror = (e) => reject(e)
     window.speechSynthesis.speak(utterance)
@@ -122,7 +123,7 @@ export function playWithSpeechSynthesis(
 export async function playPronunciation(
   word: string,
   storedAudioUrl: string | null,
-  lang: 'en-US' | 'en-GB' | 'vi-VN' = 'en-US',
+  lang: AudioLang = 'en-US',
   accent: Accent = 'us',
 ): Promise<void> {
   // 1. Try stored audio URL
@@ -135,8 +136,8 @@ export async function playPronunciation(
     }
   }
 
-  // 2. Try dictionary API (English only)
-  if (lang !== 'vi-VN') {
+  // 2. Try dictionary API (English only - dictionaryapi.dev doesn't support Japanese)
+  if (lang.startsWith('en')) {
     const dictUrl = await fetchDictionaryAudioUrl(word, accent)
     if (dictUrl) {
       try {
@@ -148,7 +149,7 @@ export async function playPronunciation(
     }
   }
 
-  // 3. Fallback to Web Speech API
+  // 3. Fallback to Web Speech API (works for all languages including ja-JP)
   await playWithSpeechSynthesis(word, lang)
 }
 

@@ -1,3 +1,12 @@
+export type Language = 'en' | 'ja'
+
+export interface JapaneseExtraFields {
+  hiragana?: string
+  katakana?: string
+  jlpt_level?: string
+  [key: string]: unknown
+}
+
 export interface Card {
   id: string
   deck_id: string
@@ -8,6 +17,7 @@ export interface Card {
   audio_url: string | null
   image_url: string | null
   tags: string[] | null
+  extra_fields: JapaneseExtraFields | Record<string, unknown> | null
   position: number
   created_at: string
   updated_at: string
@@ -22,6 +32,7 @@ export interface Deck {
   is_preset: boolean
   is_public: boolean
   category: string | null
+  language: string
   card_count: number
   created_at: string
   updated_at: string
@@ -60,10 +71,12 @@ export interface CreateCardInput {
   pronunciation?: string
   audio_url?: string | null
   tags?: string[]
+  extra_fields?: JapaneseExtraFields | Record<string, unknown>
 }
 
 export interface CreateDeckInput {
   name: string
   description?: string
   category?: string
+  language?: Language
 }

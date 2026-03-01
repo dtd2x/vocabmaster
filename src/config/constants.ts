@@ -55,8 +55,14 @@ export const RATING_COLORS: Record<Rating, string> = {
   4: 'bg-primary-500',
 }
 
-// Deck categories
-export const DECK_CATEGORIES = [
+// Language support
+export const LANGUAGES = [
+  { value: 'en' as const, label: 'Tiếng Anh', flag: '🇬🇧' },
+  { value: 'ja' as const, label: 'Tiếng Nhật', flag: '🇯🇵' },
+]
+
+// Deck categories per language
+export const DECK_CATEGORIES_EN = [
   { value: 'ielts', label: 'IELTS' },
   { value: 'toeic', label: 'TOEIC' },
   { value: 'toefl', label: 'TOEFL' },
@@ -65,3 +71,21 @@ export const DECK_CATEGORIES = [
   { value: 'academic', label: 'Học thuật' },
   { value: 'custom', label: 'Tùy chỉnh' },
 ] as const
+
+export const DECK_CATEGORIES_JA = [
+  { value: 'jlpt_n5', label: 'JLPT N5' },
+  { value: 'jlpt_n4', label: 'JLPT N4' },
+  { value: 'jlpt_n3', label: 'JLPT N3' },
+  { value: 'jlpt_n2', label: 'JLPT N2' },
+  { value: 'jlpt_n1', label: 'JLPT N1' },
+  { value: 'common_ja', label: 'Giao tiếp hàng ngày' },
+  { value: 'business_ja', label: 'Tiếng Nhật thương mại' },
+  { value: 'custom', label: 'Tùy chỉnh' },
+] as const
+
+// Keep backward-compatible DECK_CATEGORIES (English)
+export const DECK_CATEGORIES = DECK_CATEGORIES_EN
+
+export function getDeckCategories(language: string) {
+  return language === 'ja' ? DECK_CATEGORIES_JA : DECK_CATEGORIES_EN
+}

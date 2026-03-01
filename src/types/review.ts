@@ -17,6 +17,8 @@ export interface ReviewCard {
   example_sentence: string | null
   pronunciation: string | null
   audio_url: string | null
+  extra_fields: Record<string, unknown> | null
+  language: string
   ease_factor: number
   interval: number
   repetitions: number

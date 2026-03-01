@@ -3,15 +3,17 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/Button'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { AudioButton } from '@/components/ui/AudioButton'
-import type { Card } from '@/types/card'
+import type { Card, JapaneseExtraFields } from '@/types/card'
 
 interface CardListProps {
   cards: Card[]
   onEdit: (card: Card) => void
   onDelete: (id: string) => Promise<void>
+  language?: string
 }
 
-export function CardList({ cards, onEdit, onDelete }: CardListProps) {
+export function CardList({ cards, onEdit, onDelete, language = 'en' }: CardListProps) {
+  const isJapanese = language === 'ja'
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [loadingDelete, setLoadingDelete] = useState(false)
 
@@ -42,10 +44,15 @@ export function CardList({ cards, onEdit, onDelete }: CardListProps) {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <span className="font-medium text-gray-900 dark:text-gray-100">{card.front}</span>
+                  {isJapanese && (card.extra_fields as JapaneseExtraFields)?.hiragana && (
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                      【{(card.extra_fields as JapaneseExtraFields).hiragana}】
+                    </span>
+                  )}
                   {card.pronunciation && (
                     <span className="text-xs text-gray-400">{card.pronunciation}</span>
                   )}
-                  <AudioButton word={card.front} audioUrl={card.audio_url} size="sm" />
+                  <AudioButton word={card.front} audioUrl={card.audio_url} size="sm" lang={isJapanese ? 'ja-JP' : undefined} />
                 </div>
                 <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{card.back}</p>
                 {card.example_sentence && (

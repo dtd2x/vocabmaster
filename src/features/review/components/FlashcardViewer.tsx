@@ -2,8 +2,10 @@ import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import type { ReviewCard } from '@/types/review'
 import { AudioButton } from '@/components/ui/AudioButton'
+import { FuriganaText } from '@/components/shared/FuriganaText'
 import { useAudio } from '@/hooks/useAudio'
 import { useSettingsStore } from '@/stores/settingsStore'
+import type { AudioLang } from '@/lib/audio'
 
 interface FlashcardViewerProps {
   card: ReviewCard
@@ -13,7 +15,11 @@ interface FlashcardViewerProps {
 
 export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProps) {
   const { autoPlayAudio } = useSettingsStore()
-  const { play } = useAudio({ word: card.front, audioUrl: card.audio_url })
+  const isJapanese = card.language === 'ja'
+  const audioLang: AudioLang = isJapanese ? 'ja-JP' : 'en-US'
+  const hiragana = (card.extra_fields as Record<string, string> | null)?.hiragana
+
+  const { play } = useAudio({ word: card.front, audioUrl: card.audio_url, lang: audioLang })
 
   useEffect(() => {
     if (isFlipped && autoPlayAudio) {
@@ -39,11 +45,11 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
           style={{ backfaceVisibility: 'hidden' }}
         >
           {/* Top accent line */}
-          <div className="h-1 bg-gradient-to-r from-primary-400 via-indigo-500 to-violet-500 shrink-0" />
+          <div className={`h-1 shrink-0 ${isJapanese ? 'bg-gradient-to-r from-rose-400 via-pink-500 to-red-500' : 'bg-gradient-to-r from-primary-400 via-indigo-500 to-violet-500'}`} />
 
           {/* Action buttons - top right */}
           <div className="absolute top-4 right-4 sm:top-5 sm:right-6 z-10 flex items-center gap-2">
-            <AudioButton word={card.front} audioUrl={card.audio_url} size="md" className="text-gray-400 hover:text-white hover:bg-white/10 dark:hover:text-white dark:hover:bg-white/10" />
+            <AudioButton word={card.front} audioUrl={card.audio_url} lang={audioLang} size="md" className="text-gray-400 hover:text-white hover:bg-white/10 dark:hover:text-white dark:hover:bg-white/10" />
           </div>
 
           {/* Center content */}
@@ -51,17 +57,25 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white text-center leading-tight break-words max-w-full">
               {card.front}
             </h2>
+
+            {/* Japanese: show hiragana reading */}
+            {isJapanese && hiragana && (
+              <span className="text-gray-300 text-xl sm:text-2xl font-light mt-3">
+                {hiragana}
+              </span>
+            )}
+
             {card.pronunciation && (
-              <span className="text-gray-400 text-base sm:text-lg font-light tracking-wide mt-4">
+              <span className="text-gray-400 text-base sm:text-lg font-light tracking-wide mt-2">
                 {card.pronunciation}
               </span>
             )}
           </div>
 
           {/* Bottom bar */}
-          <div className="shrink-0 py-3 bg-primary-600 text-center">
+          <div className={`shrink-0 py-3 text-center ${isJapanese ? 'bg-rose-600' : 'bg-primary-600'}`}>
             <span className="text-white/90 text-sm font-medium">
-              Nhấn vào thẻ để lật 👆
+              Nhấn vào thẻ để lật
             </span>
           </div>
         </div>
@@ -76,7 +90,7 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
 
           {/* Action buttons - top right */}
           <div className="absolute top-4 right-4 sm:top-5 sm:right-6 z-10 flex items-center gap-2">
-            <AudioButton word={card.front} audioUrl={card.audio_url} size="md" className="text-gray-400 hover:text-white hover:bg-white/10 dark:hover:text-white dark:hover:bg-white/10" />
+            <AudioButton word={card.front} audioUrl={card.audio_url} lang={audioLang} size="md" className="text-gray-400 hover:text-white hover:bg-white/10 dark:hover:text-white dark:hover:bg-white/10" />
           </div>
 
           {/* Center content */}
@@ -92,9 +106,16 @@ export function FlashcardViewer({ card, isFlipped, onFlip }: FlashcardViewerProp
             {card.example_sentence && (
               <div className="mt-6 w-full max-w-2xl">
                 <div className="bg-white/5 rounded-xl px-5 py-3 sm:px-6 sm:py-4">
-                  <p className="text-gray-300 italic text-center text-sm sm:text-base leading-relaxed">
-                    &ldquo;{card.example_sentence}&rdquo;
-                  </p>
+                  {isJapanese ? (
+                    <FuriganaText
+                      text={card.example_sentence}
+                      className="text-gray-300 text-center text-sm sm:text-base leading-relaxed block"
+                    />
+                  ) : (
+                    <p className="text-gray-300 italic text-center text-sm sm:text-base leading-relaxed">
+                      &ldquo;{card.example_sentence}&rdquo;
+                    </p>
+                  )}
                 </div>
               </div>
             )}

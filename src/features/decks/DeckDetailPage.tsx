@@ -89,6 +89,7 @@ export function DeckDetailPage() {
           cards={cards}
           onEdit={(card) => setEditingCard(card)}
           onDelete={deleteCard}
+          language={deck.language}
         />
       ) : (
         <EmptyState
@@ -105,6 +106,7 @@ export function DeckDetailPage() {
         onClose={() => setShowCardForm(false)}
         onSubmit={createCard}
         deckId={deckId!}
+        language={deck.language}
       />
 
       {/* Edit card form */}
@@ -115,6 +117,7 @@ export function DeckDetailPage() {
           onSubmit={(input) => updateCard(editingCard.id, input)}
           deckId={deckId!}
           card={editingCard}
+          language={deck.language}
         />
       )}
 
@@ -132,6 +135,7 @@ export function DeckDetailPage() {
         onClose={() => setShowSmartAdd(false)}
         onImport={bulkCreateCards}
         deckId={deckId!}
+        language={deck.language}
       />
     </div>
   )

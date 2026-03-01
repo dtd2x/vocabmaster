@@ -12,9 +12,11 @@ interface MatchingPair {
 interface MatchingGameProps {
   pairs: MatchingPair[]
   onComplete: (results: { correct: number; total: number }) => void
+  language?: string
 }
 
-export function MatchingGame({ pairs, onComplete }: MatchingGameProps) {
+export function MatchingGame({ pairs, onComplete, language = 'en' }: MatchingGameProps) {
+  const isJapanese = language === 'ja'
   const gamePairs = useMemo(() => pairs.slice(0, 6), [pairs])
   const shuffledFronts = useMemo(() => shuffleArray(gamePairs), [gamePairs])
   const shuffledBacks = useMemo(() => shuffleArray(gamePairs), [gamePairs])
@@ -65,7 +67,7 @@ export function MatchingGame({ pairs, onComplete }: MatchingGameProps) {
     <div>
       {/* Progress bar */}
       <div className="flex items-center justify-between mb-4">
-        <p className="text-sm text-gray-500 dark:text-gray-400">Nối từ tiếng Anh với nghĩa tiếng Việt</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">{isJapanese ? 'Nối từ tiếng Nhật với nghĩa tiếng Việt' : 'Nối từ tiếng Anh với nghĩa tiếng Việt'}</p>
         <span className="text-sm font-semibold text-primary-500">{matched.size}/{gamePairs.length}</span>
       </div>
       <div className="w-full h-2 bg-border-light dark:bg-border-dark rounded-full mb-6 overflow-hidden">
@@ -78,7 +80,7 @@ export function MatchingGame({ pairs, onComplete }: MatchingGameProps) {
       <div className="grid grid-cols-2 gap-5 sm:gap-6">
         {/* English column */}
         <div className="space-y-3">
-          <p className="text-xs text-gray-400 uppercase tracking-widest mb-3 text-center font-medium">Tiếng Anh</p>
+          <p className="text-xs text-gray-400 uppercase tracking-widest mb-3 text-center font-medium">{isJapanese ? 'Tiếng Nhật' : 'Tiếng Anh'}</p>
           {shuffledFronts.map(pair => (
             <motion.button
               key={`front-${pair.id}`}

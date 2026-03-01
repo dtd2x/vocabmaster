@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/config/supabase'
 import { useAuthStore } from '@/stores/authStore'
+import { useSettingsStore } from '@/stores/settingsStore'
 import type { Deck, CreateDeckInput } from '@/types/card'
 
 export function useDecks() {
   const { user } = useAuthStore()
+  const activeLanguage = useSettingsStore((s) => s.activeLanguage)
   const [decks, setDecks] = useState<Deck[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -16,17 +18,18 @@ export function useDecks() {
       .select('*')
       .eq('user_id', user.id)
       .eq('is_preset', false)
+      .eq('language', activeLanguage)
       .order('updated_at', { ascending: false })
 
     if (!error && data) setDecks(data)
     setLoading(false)
-  }, [user])
+  }, [user, activeLanguage])
 
   const createDeck = async (input: CreateDeckInput) => {
     if (!user) throw new Error('Not authenticated')
     const { data, error } = await supabase
       .from('decks')
-      .insert({ ...input, user_id: user.id })
+      .insert({ ...input, language: input.language ?? activeLanguage, user_id: user.id })
       .select()
       .single()
 
@@ -60,6 +63,7 @@ export function useDecks() {
 }
 
 export function usePresetDecks() {
+  const activeLanguage = useSettingsStore((s) => s.activeLanguage)
   const [decks, setDecks] = useState<Deck[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -69,13 +73,14 @@ export function usePresetDecks() {
         .from('decks')
         .select('*')
         .eq('is_preset', true)
+        .eq('language', activeLanguage)
         .order('name')
 
       setDecks(data ?? [])
       setLoading(false)
     }
     fetch()
-  }, [])
+  }, [activeLanguage])
 
   const clonePresetDeck = async (presetDeckId: string, userId: string) => {
     // Get the preset deck
@@ -95,6 +100,7 @@ export function usePresetDecks() {
         name: preset.name,
         description: preset.description,
         category: preset.category,
+        language: preset.language ?? 'en',
         cover_image_url: preset.cover_image_url,
       })
       .select()
@@ -118,6 +124,7 @@ export function usePresetDecks() {
         audio_url: c.audio_url,
         image_url: c.image_url,
         tags: c.tags,
+        extra_fields: c.extra_fields,
         position: c.position,
       }))
 

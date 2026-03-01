@@ -15,7 +15,8 @@ export function MultipleChoice({ question, onAnswer }: MultipleChoiceProps) {
   const [selected, setSelected] = useState<string | null>(null)
   const [revealed, setRevealed] = useState(false)
   const { autoPlayAudio } = useSettingsStore()
-  const { play } = useAudio({ word: question.question, audioUrl: question.audioUrl })
+  const isJapanese = question.language === 'ja'
+  const { play } = useAudio({ word: question.question, audioUrl: question.audioUrl, lang: isJapanese ? 'ja-JP' : undefined })
 
   useEffect(() => {
     if (autoPlayAudio) play()
@@ -40,8 +41,11 @@ export function MultipleChoice({ question, onAnswer }: MultipleChoiceProps) {
       <div className="bg-[#2e3856] rounded-2xl p-10 sm:p-12 text-center shadow-xl" style={{ aspectRatio: '16 / 7' }}>
         <div className="h-full flex flex-col items-center justify-center">
           <p className="text-xs text-gray-400 uppercase tracking-widest mb-5 font-medium">Từ này nghĩa là gì?</p>
-          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-5">{question.question}</h2>
-          <AudioButton word={question.question} audioUrl={question.audioUrl} size="md" className="text-gray-400 hover:text-white hover:bg-white/10 dark:hover:text-white dark:hover:bg-white/10" />
+          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-3">{question.question}</h2>
+          {isJapanese && question.hiragana && (
+            <p className="text-gray-300 text-lg mb-3">{question.hiragana}</p>
+          )}
+          <AudioButton word={question.question} audioUrl={question.audioUrl} lang={isJapanese ? 'ja-JP' : undefined} size="md" className="text-gray-400 hover:text-white hover:bg-white/10 dark:hover:text-white dark:hover:bg-white/10" />
         </div>
       </div>
 

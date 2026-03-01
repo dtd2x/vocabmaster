@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/stores/authStore'
 import { ThemeToggle } from '@/components/shared/ThemeToggle'
 import { UserAvatar } from '@/components/shared/UserAvatar'
+import { LanguageSelector } from '@/components/shared/LanguageSelector'
 import { getLevelInfo } from '@/lib/xp'
 import { ROUTES } from '@/config/routes'
 
@@ -71,6 +72,11 @@ export function Sidebar() {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Language Selector */}
+      <div className="px-3 mb-3">
+        <LanguageSelector />
       </div>
 
       {/* Navigation */}

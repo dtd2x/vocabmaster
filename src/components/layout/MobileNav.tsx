@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import { useUIStore } from '@/stores/uiStore'
 import { useAuthStore } from '@/stores/authStore'
 import { UserAvatar } from '@/components/shared/UserAvatar'
+import { LanguageSelector } from '@/components/shared/LanguageSelector'
 import { getLevelInfo } from '@/lib/xp'
 import { ROUTES } from '@/config/routes'
 
@@ -74,6 +75,11 @@ export function MobileNav() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* Language Selector */}
+              <div className="px-3 py-3 border-b border-gray-200/70 dark:border-sidebar-dark-hover">
+                <LanguageSelector />
               </div>
 
               {/* Nav */}

@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { DEFAULT_NEW_CARDS_PER_DAY, DEFAULT_REVIEW_LIMIT, DEFAULT_DAILY_GOAL } from '@/config/constants'
 import type { Accent } from '@/lib/audio'
+import type { Language } from '@/types/card'
 
 type Theme = 'light' | 'dark' | 'system'
 
@@ -12,8 +13,10 @@ interface SettingsState {
   dailyGoal: number
   autoPlayAudio: boolean
   accent: Accent
+  activeLanguage: Language
 
   setTheme: (theme: Theme) => void
+  setActiveLanguage: (lang: Language) => void
   updateSettings: (partial: Partial<Pick<SettingsState, 'newCardsPerDay' | 'reviewLimit' | 'dailyGoal' | 'autoPlayAudio' | 'accent'>>) => void
 }
 
@@ -26,11 +29,14 @@ export const useSettingsStore = create<SettingsState>()(
       dailyGoal: DEFAULT_DAILY_GOAL,
       autoPlayAudio: false,
       accent: 'us' as Accent,
+      activeLanguage: 'en' as Language,
 
       setTheme: (theme) => {
         set({ theme })
         applyTheme(theme)
       },
+
+      setActiveLanguage: (activeLanguage) => set({ activeLanguage }),
 
       updateSettings: (partial) => set(partial),
     }),

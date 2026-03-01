@@ -26,8 +26,9 @@ async function fetchDueCards(
         example_sentence,
         pronunciation,
         audio_url,
+        extra_fields,
         deck_id,
-        decks!inner ( name )
+        decks!inner ( name, language )
       )
     `)
     .eq('user_id', userId)
@@ -49,8 +50,9 @@ async function fetchDueCards(
     const card = row.cards as unknown as {
       id: string; front: string; back: string;
       example_sentence: string | null; pronunciation: string | null;
-      audio_url: string | null; deck_id: string;
-      decks: { name: string }
+      audio_url: string | null; extra_fields: Record<string, unknown> | null;
+      deck_id: string;
+      decks: { name: string; language: string }
     }
     return {
       card_id: card.id,
@@ -59,6 +61,8 @@ async function fetchDueCards(
       example_sentence: card.example_sentence,
       pronunciation: card.pronunciation,
       audio_url: card.audio_url,
+      extra_fields: card.extra_fields,
+      language: card.decks.language,
       ease_factor: row.ease_factor,
       interval: row.interval,
       repetitions: row.repetitions,
@@ -93,8 +97,9 @@ async function fetchNewCards(
         example_sentence,
         pronunciation,
         audio_url,
+        extra_fields,
         deck_id,
-        decks!inner ( name )
+        decks!inner ( name, language )
       )
     `)
     .eq('user_id', userId)
@@ -115,8 +120,9 @@ async function fetchNewCards(
     const card = row.cards as unknown as {
       id: string; front: string; back: string;
       example_sentence: string | null; pronunciation: string | null;
-      audio_url: string | null; deck_id: string;
-      decks: { name: string }
+      audio_url: string | null; extra_fields: Record<string, unknown> | null;
+      deck_id: string;
+      decks: { name: string; language: string }
     }
     return {
       card_id: card.id,
@@ -125,6 +131,8 @@ async function fetchNewCards(
       example_sentence: card.example_sentence,
       pronunciation: card.pronunciation,
       audio_url: card.audio_url,
+      extra_fields: card.extra_fields,
+      language: card.decks.language,
       ease_factor: row.ease_factor,
       interval: row.interval,
       repetitions: row.repetitions,

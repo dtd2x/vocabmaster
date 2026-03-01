@@ -19,6 +19,7 @@ export function QuizSessionPage() {
   const navigate = useNavigate()
   const { stats } = useAuthStore()
   const [cards, setCards] = useState<CardType[]>([])
+  const [deckLanguage, setDeckLanguage] = useState<string>('en')
   const [loading, setLoading] = useState(true)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [results, setResults] = useState<QuizResult[]>([])
@@ -30,6 +31,10 @@ export function QuizSessionPage() {
 
   useEffect(() => {
     if (!deckId) return
+    // Fetch deck to get language
+    supabase.from('decks').select('language').eq('id', deckId).single().then(({ data }) => {
+      if (data?.language) setDeckLanguage(data.language)
+    })
     supabase.from('cards').select('*').eq('deck_id', deckId).then(({ data }) => {
       setCards(shuffleArray(data ?? []).slice(0, quizMode === 'matching' ? 6 : 10))
       setLoading(false)
@@ -40,12 +45,16 @@ export function QuizSessionPage() {
     if (quizMode === 'matching') return []
 
     return cards.map(card => {
+      const extraFields = card.extra_fields as Record<string, string> | null
       const question: QuizQuestion = {
         card_id: card.id,
         question: quizMode === 'typing' ? card.back : card.front,
         correctAnswer: quizMode === 'typing' ? card.front : card.back,
         deck_id: card.deck_id,
         audioUrl: card.audio_url,
+        language: deckLanguage,
+        hiragana: extraFields?.hiragana,
+        romaji: card.pronunciation ?? undefined,
       }
 
       if (quizMode === 'multiple-choice') {
@@ -56,7 +65,7 @@ export function QuizSessionPage() {
 
       return question
     })
-  }, [cards, quizMode])
+  }, [cards, quizMode, deckLanguage])
 
   const handleAnswer = (answer: string, correct: boolean) => {
     const card = cards[currentIndex]
@@ -189,6 +198,7 @@ export function QuizSessionPage() {
           <MatchingGame
             pairs={cards.map(c => ({ id: c.id, front: c.front, back: c.back }))}
             onComplete={handleMatchingComplete}
+            language={deckLanguage}
           />
         )}
       </div>

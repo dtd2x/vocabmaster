@@ -7,6 +7,9 @@ export interface QuizQuestion {
   options?: string[]
   deck_id: string
   audioUrl?: string | null
+  language?: string
+  hiragana?: string
+  romaji?: string
 }
 
 export interface QuizResult {

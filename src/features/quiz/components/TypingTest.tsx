@@ -44,12 +44,20 @@ function isFuzzyMatch(input: string, answer: string): boolean {
 export function TypingTest({ question, onAnswer }: TypingTestProps) {
   const [input, setInput] = useState('')
   const [result, setResult] = useState<'correct' | 'incorrect' | null>(null)
+  const isJapanese = question.language === 'ja'
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (!input.trim()) return
 
-    const correct = isFuzzyMatch(input, question.correctAnswer)
+    // For Japanese, also accept hiragana or romaji as correct
+    let correct = isFuzzyMatch(input, question.correctAnswer)
+    if (!correct && isJapanese && question.hiragana) {
+      correct = isFuzzyMatch(input, question.hiragana)
+    }
+    if (!correct && isJapanese && question.romaji) {
+      correct = isFuzzyMatch(input, question.romaji)
+    }
     setResult(correct ? 'correct' : 'incorrect')
 
     setTimeout(() => {
@@ -64,7 +72,7 @@ export function TypingTest({ question, onAnswer }: TypingTestProps) {
       {/* Question card */}
       <div className="bg-[#2e3856] rounded-2xl p-10 sm:p-12 text-center shadow-xl" style={{ aspectRatio: '16 / 7' }}>
         <div className="h-full flex flex-col items-center justify-center">
-          <p className="text-xs text-gray-400 uppercase tracking-widest mb-5 font-medium">Dịch sang tiếng Anh</p>
+          <p className="text-xs text-gray-400 uppercase tracking-widest mb-5 font-medium">{isJapanese ? 'Nhập từ tiếng Nhật' : 'Dịch sang tiếng Anh'}</p>
           <h2 className="text-4xl sm:text-5xl font-bold text-white">{question.question}</h2>
         </div>
       </div>
@@ -75,7 +83,7 @@ export function TypingTest({ question, onAnswer }: TypingTestProps) {
           type="text"
           value={input}
           onChange={e => setInput(e.target.value)}
-          placeholder="Nhập từ tiếng Anh..."
+          placeholder={isJapanese ? 'Nhập kanji, hiragana hoặc romaji...' : 'Nhập từ tiếng Anh...'}
           autoFocus
           disabled={result !== null}
           className={`w-full px-6 py-5 rounded-xl border-2 text-lg text-center font-medium focus:outline-none transition-colors
@@ -94,7 +102,7 @@ export function TypingTest({ question, onAnswer }: TypingTestProps) {
             <p className="text-sm text-red-600 dark:text-red-400">
               Đáp án: <strong className="text-red-700 dark:text-red-300">{question.correctAnswer}</strong>
             </p>
-            <AudioButton word={question.correctAnswer} audioUrl={question.audioUrl} size="sm" className="inline-flex" />
+            <AudioButton word={question.correctAnswer} audioUrl={question.audioUrl} lang={isJapanese ? 'ja-JP' : undefined} size="sm" className="inline-flex" />
           </motion.div>
         )}
 

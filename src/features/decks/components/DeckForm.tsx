@@ -3,7 +3,8 @@ import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
-import { DECK_CATEGORIES } from '@/config/constants'
+import { getDeckCategories } from '@/config/constants'
+import { useSettingsStore } from '@/stores/settingsStore'
 import type { Deck, CreateDeckInput } from '@/types/card'
 import toast from 'react-hot-toast'
 
@@ -15,12 +16,14 @@ interface DeckFormProps {
 }
 
 export function DeckForm({ isOpen, onClose, onSubmit, deck }: DeckFormProps) {
+  const activeLanguage = useSettingsStore((s) => s.activeLanguage)
   const [name, setName] = useState(deck?.name ?? '')
   const [description, setDescription] = useState(deck?.description ?? '')
   const [category, setCategory] = useState(deck?.category ?? '')
   const [loading, setLoading] = useState(false)
 
   const isEdit = !!deck
+  const categories = getDeckCategories(deck?.language ?? activeLanguage)
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -62,7 +65,7 @@ export function DeckForm({ isOpen, onClose, onSubmit, deck }: DeckFormProps) {
           label="Danh mục"
           value={category}
           onChange={e => setCategory(e.target.value)}
-          options={DECK_CATEGORIES.map(c => ({ value: c.value, label: c.label }))}
+          options={categories.map(c => ({ value: c.value, label: c.label }))}
           placeholder="Chọn danh mục"
         />
         <div className="flex justify-end gap-3 pt-2">

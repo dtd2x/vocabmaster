@@ -44,6 +44,7 @@ export interface Database {
           is_public: boolean
           category: string | null
           card_count: number
+          language: string
           created_at: string
           updated_at: string
         }
@@ -57,6 +58,7 @@ export interface Database {
           is_public?: boolean
           category?: string | null
           card_count?: number
+          language?: string
         }
         Update: {
           name?: string
@@ -65,6 +67,7 @@ export interface Database {
           is_public?: boolean
           category?: string | null
           card_count?: number
+          language?: string
           updated_at?: string
         }
         Relationships: [
@@ -88,6 +91,7 @@ export interface Database {
           audio_url: string | null
           image_url: string | null
           tags: string[] | null
+          extra_fields: Record<string, unknown> | null
           position: number
           created_at: string
           updated_at: string
@@ -102,6 +106,7 @@ export interface Database {
           audio_url?: string | null
           image_url?: string | null
           tags?: string[] | null
+          extra_fields?: Record<string, unknown> | null
           position?: number
         }
         Update: {
@@ -113,6 +118,7 @@ export interface Database {
           audio_url?: string | null
           image_url?: string | null
           tags?: string[] | null
+          extra_fields?: Record<string, unknown> | null
           position?: number
           updated_at?: string
         }

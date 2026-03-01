@@ -4,10 +4,10 @@
 -- ============================================================
 
 -- IELTS Academic Word List (sample)
-INSERT INTO public.decks (id, name, description, is_preset, is_public, category, card_count) VALUES
-  ('00000000-0000-0000-0000-000000000001', 'IELTS Academic Words', 'Tu vung hoc thuat thuong gap trong IELTS', TRUE, TRUE, 'ielts', 30),
-  ('00000000-0000-0000-0000-000000000002', 'TOEIC Essential', 'Tu vung co ban cho ky thi TOEIC', TRUE, TRUE, 'toeic', 30),
-  ('00000000-0000-0000-0000-000000000003', 'Giao tiep hang ngay', '500 tu tieng Anh thong dung nhat', TRUE, TRUE, 'common', 30);
+INSERT INTO public.decks (id, name, description, is_preset, is_public, category, language, card_count) VALUES
+  ('00000000-0000-0000-0000-000000000001', 'IELTS Academic Words', 'Tu vung hoc thuat thuong gap trong IELTS', TRUE, TRUE, 'ielts', 'en', 30),
+  ('00000000-0000-0000-0000-000000000002', 'TOEIC Essential', 'Tu vung co ban cho ky thi TOEIC', TRUE, TRUE, 'toeic', 'en', 30),
+  ('00000000-0000-0000-0000-000000000003', 'Giao tiep hang ngay', '500 tu tieng Anh thong dung nhat', TRUE, TRUE, 'common', 'en', 30);
 
 -- IELTS Words
 INSERT INTO public.cards (deck_id, front, back, example_sentence, pronunciation, position) VALUES
@@ -107,3 +107,77 @@ INSERT INTO public.cards (deck_id, front, back, example_sentence, pronunciation,
   ('00000000-0000-0000-0000-000000000003', 'immediately', 'ngay lap tuc', 'Please come here immediately.', '/ɪˈmiː.di.ət.li/', 27),
   ('00000000-0000-0000-0000-000000000003', 'knowledge', 'kien thuc', 'Knowledge is power.', '/ˈnɒl.ɪdʒ/', 28),
   ('00000000-0000-0000-0000-000000000003', 'recognize', 'nhan ra', 'I did not recognize you!', '/ˈrek.əɡ.naɪz/', 29);
+
+-- ============================================================
+-- JAPANESE PRESET DECKS
+-- ============================================================
+
+INSERT INTO public.decks (id, name, description, is_preset, is_public, category, language, card_count) VALUES
+  ('00000000-0000-0000-0000-000000000010', 'JLPT N5 - Tu vung co ban', 'Tu vung tieng Nhat co ban cho trinh do JLPT N5', TRUE, TRUE, 'jlpt_n5', 'ja', 30),
+  ('00000000-0000-0000-0000-000000000011', 'Giao tiep tieng Nhat', 'Cac cum tu tieng Nhat thuong dung hang ngay', TRUE, TRUE, 'common_ja', 'ja', 30);
+
+-- JLPT N5 Words
+INSERT INTO public.cards (deck_id, front, back, example_sentence, pronunciation, extra_fields, position) VALUES
+  ('00000000-0000-0000-0000-000000000010', '食べる', 'an, dung bua', '毎日[まいにち]ご飯[はん]を食[た]べます。', 'taberu', '{"hiragana": "たべる", "jlpt_level": "N5"}', 0),
+  ('00000000-0000-0000-0000-000000000010', '飲む', 'uong', 'お水[みず]を飲[の]みます。', 'nomu', '{"hiragana": "のむ", "jlpt_level": "N5"}', 1),
+  ('00000000-0000-0000-0000-000000000010', '行く', 'di', '学校[がっこう]に行[い]きます。', 'iku', '{"hiragana": "いく", "jlpt_level": "N5"}', 2),
+  ('00000000-0000-0000-0000-000000000010', '来る', 'den', '友達[ともだち]が来[き]ました。', 'kuru', '{"hiragana": "くる", "jlpt_level": "N5"}', 3),
+  ('00000000-0000-0000-0000-000000000010', '見る', 'nhin, xem', 'テレビを見[み]ます。', 'miru', '{"hiragana": "みる", "jlpt_level": "N5"}', 4),
+  ('00000000-0000-0000-0000-000000000010', '聞く', 'nghe, hoi', '音楽[おんがく]を聞[き]きます。', 'kiku', '{"hiragana": "きく", "jlpt_level": "N5"}', 5),
+  ('00000000-0000-0000-0000-000000000010', '読む', 'doc', '本[ほん]を読[よ]みます。', 'yomu', '{"hiragana": "よむ", "jlpt_level": "N5"}', 6),
+  ('00000000-0000-0000-0000-000000000010', '書く', 'viet', '手紙[てがみ]を書[か]きます。', 'kaku', '{"hiragana": "かく", "jlpt_level": "N5"}', 7),
+  ('00000000-0000-0000-0000-000000000010', '話す', 'noi', '日本語[にほんご]を話[はな]します。', 'hanasu', '{"hiragana": "はなす", "jlpt_level": "N5"}', 8),
+  ('00000000-0000-0000-0000-000000000010', '買う', 'mua', 'お土産[みやげ]を買[か]いました。', 'kau', '{"hiragana": "かう", "jlpt_level": "N5"}', 9),
+  ('00000000-0000-0000-0000-000000000010', '寝る', 'ngu', '十時[じゅうじ]に寝[ね]ます。', 'neru', '{"hiragana": "ねる", "jlpt_level": "N5"}', 10),
+  ('00000000-0000-0000-0000-000000000010', '起きる', 'thuc day', '朝[あさ]六時[ろくじ]に起[お]きます。', 'okiru', '{"hiragana": "おきる", "jlpt_level": "N5"}', 11),
+  ('00000000-0000-0000-0000-000000000010', '作る', 'lam, tao', '料理[りょうり]を作[つく]ります。', 'tsukuru', '{"hiragana": "つくる", "jlpt_level": "N5"}', 12),
+  ('00000000-0000-0000-0000-000000000010', '使う', 'su dung', 'パソコンを使[つか]います。', 'tsukau', '{"hiragana": "つかう", "jlpt_level": "N5"}', 13),
+  ('00000000-0000-0000-0000-000000000010', '待つ', 'doi, cho', 'バスを待[ま]ちます。', 'matsu', '{"hiragana": "まつ", "jlpt_level": "N5"}', 14),
+  ('00000000-0000-0000-0000-000000000010', '大きい', 'to, lon', 'この家[いえ]は大[おお]きいです。', 'ookii', '{"hiragana": "おおきい", "jlpt_level": "N5"}', 15),
+  ('00000000-0000-0000-0000-000000000010', '小さい', 'nho, be', 'この猫[ねこ]は小[ちい]さいです。', 'chiisai', '{"hiragana": "ちいさい", "jlpt_level": "N5"}', 16),
+  ('00000000-0000-0000-0000-000000000010', '新しい', 'moi', '新[あたら]しい車[くるま]を買[か]いました。', 'atarashii', '{"hiragana": "あたらしい", "jlpt_level": "N5"}', 17),
+  ('00000000-0000-0000-0000-000000000010', '古い', 'cu', 'この建物[たてもの]は古[ふる]いです。', 'furui', '{"hiragana": "ふるい", "jlpt_level": "N5"}', 18),
+  ('00000000-0000-0000-0000-000000000010', '高い', 'cao, dat', 'この山[やま]は高[たか]いです。', 'takai', '{"hiragana": "たかい", "jlpt_level": "N5"}', 19),
+  ('00000000-0000-0000-0000-000000000010', '安い', 're', 'このりんごは安[やす]いです。', 'yasui', '{"hiragana": "やすい", "jlpt_level": "N5"}', 20),
+  ('00000000-0000-0000-0000-000000000010', '学校', 'truong hoc', '学校[がっこう]は大[おお]きいです。', 'gakkou', '{"hiragana": "がっこう", "jlpt_level": "N5"}', 21),
+  ('00000000-0000-0000-0000-000000000010', '先生', 'thay/co giao', '先生[せんせい]はやさしいです。', 'sensei', '{"hiragana": "せんせい", "jlpt_level": "N5"}', 22),
+  ('00000000-0000-0000-0000-000000000010', '友達', 'ban be', '友達[ともだち]と遊[あそ]びます。', 'tomodachi', '{"hiragana": "ともだち", "jlpt_level": "N5"}', 23),
+  ('00000000-0000-0000-0000-000000000010', '家族', 'gia dinh', '家族[かぞく]は五人[ごにん]です。', 'kazoku', '{"hiragana": "かぞく", "jlpt_level": "N5"}', 24),
+  ('00000000-0000-0000-0000-000000000010', '時間', 'thoi gian', '時間[じかん]がありません。', 'jikan', '{"hiragana": "じかん", "jlpt_level": "N5"}', 25),
+  ('00000000-0000-0000-0000-000000000010', '天気', 'thoi tiet', '今日[きょう]は天気[てんき]がいいです。', 'tenki', '{"hiragana": "てんき", "jlpt_level": "N5"}', 26),
+  ('00000000-0000-0000-0000-000000000010', '電車', 'tau dien', '電車[でんしゃ]で行[い]きます。', 'densha', '{"hiragana": "でんしゃ", "jlpt_level": "N5"}', 27),
+  ('00000000-0000-0000-0000-000000000010', '仕事', 'cong viec', '仕事[しごと]は忙[いそが]しいです。', 'shigoto', '{"hiragana": "しごと", "jlpt_level": "N5"}', 28),
+  ('00000000-0000-0000-0000-000000000010', '勉強', 'hoc tap', '毎日[まいにち]日本語[にほんご]を勉強[べんきょう]します。', 'benkyou', '{"hiragana": "べんきょう", "jlpt_level": "N5"}', 29);
+
+-- Giao tiep tieng Nhat co ban
+INSERT INTO public.cards (deck_id, front, back, example_sentence, pronunciation, extra_fields, position) VALUES
+  ('00000000-0000-0000-0000-000000000011', 'こんにちは', 'xin chao (ban ngay)', 'こんにちは、お元気[げんき]ですか。', 'konnichiwa', '{"hiragana": "こんにちは"}', 0),
+  ('00000000-0000-0000-0000-000000000011', 'ありがとう', 'cam on', 'ありがとうございます。', 'arigatou', '{"hiragana": "ありがとう"}', 1),
+  ('00000000-0000-0000-0000-000000000011', 'すみません', 'xin loi / xin phep', 'すみません、駅[えき]はどこですか。', 'sumimasen', '{"hiragana": "すみません"}', 2),
+  ('00000000-0000-0000-0000-000000000011', 'お願いします', 'lam on, xin vui long', 'これをお願[ねが]いします。', 'onegaishimasu', '{"hiragana": "おねがいします"}', 3),
+  ('00000000-0000-0000-0000-000000000011', 'おはようございます', 'chao buoi sang', 'おはようございます、先生[せんせい]。', 'ohayou gozaimasu', '{"hiragana": "おはようございます"}', 4),
+  ('00000000-0000-0000-0000-000000000011', 'こんばんは', 'chao buoi toi', 'こんばんは、今日[きょう]はお疲[つか]れ様[さま]でした。', 'konbanwa', '{"hiragana": "こんばんは"}', 5),
+  ('00000000-0000-0000-0000-000000000011', 'さようなら', 'tam biet', 'さようなら、また明日[あした]。', 'sayounara', '{"hiragana": "さようなら"}', 6),
+  ('00000000-0000-0000-0000-000000000011', 'はい', 'vang, da', 'はい、そうです。', 'hai', '{"hiragana": "はい"}', 7),
+  ('00000000-0000-0000-0000-000000000011', 'いいえ', 'khong', 'いいえ、違[ちが]います。', 'iie', '{"hiragana": "いいえ"}', 8),
+  ('00000000-0000-0000-0000-000000000011', 'いくらですか', 'bao nhieu tien?', 'これはいくらですか。', 'ikura desu ka', '{"hiragana": "いくらですか"}', 9),
+  ('00000000-0000-0000-0000-000000000011', 'どこですか', 'o dau?', 'トイレはどこですか。', 'doko desu ka', '{"hiragana": "どこですか"}', 10),
+  ('00000000-0000-0000-0000-000000000011', 'いただきます', 'xin phep duoc an', '皆[みな]さん、いただきます。', 'itadakimasu', '{"hiragana": "いただきます"}', 11),
+  ('00000000-0000-0000-0000-000000000011', 'ごちそうさまでした', 'cam on vi bua an', 'ごちそうさまでした、美味[おい]しかったです。', 'gochisousama deshita', '{"hiragana": "ごちそうさまでした"}', 12),
+  ('00000000-0000-0000-0000-000000000011', '大丈夫', 'khong sao, on', '大丈夫[だいじょうぶ]ですか。', 'daijoubu', '{"hiragana": "だいじょうぶ"}', 13),
+  ('00000000-0000-0000-0000-000000000011', 'わかりました', 'da hieu', 'はい、わかりました。', 'wakarimashita', '{"hiragana": "わかりました"}', 14),
+  ('00000000-0000-0000-0000-000000000011', 'わかりません', 'khong hieu', 'すみません、わかりません。', 'wakarimasen', '{"hiragana": "わかりません"}', 15),
+  ('00000000-0000-0000-0000-000000000011', 'お元気ですか', 'ban co khoe khong?', 'お久[ひさ]しぶりです。お元気[げんき]ですか。', 'ogenki desu ka', '{"hiragana": "おげんきですか"}', 16),
+  ('00000000-0000-0000-0000-000000000011', '初めまして', 'rat vui duoc gap ban', '初[はじ]めまして、田中[たなか]です。', 'hajimemashite', '{"hiragana": "はじめまして"}', 17),
+  ('00000000-0000-0000-0000-000000000011', 'よろしくお願いします', 'xin hay giup do', '初[はじ]めまして、よろしくお願[ねが]いします。', 'yoroshiku onegaishimasu', '{"hiragana": "よろしくおねがいします"}', 18),
+  ('00000000-0000-0000-0000-000000000011', 'ごめんなさい', 'xin loi', 'ごめんなさい、遅[おく]れました。', 'gomen nasai', '{"hiragana": "ごめんなさい"}', 19),
+  ('00000000-0000-0000-0000-000000000011', 'お疲れ様でした', 'ban da lam viec vat va', '今日[きょう]もお疲[つか]れ様[さま]でした。', 'otsukaresama deshita', '{"hiragana": "おつかれさまでした"}', 20),
+  ('00000000-0000-0000-0000-000000000011', 'もう一度', 'mot lan nua', 'もう一度[いちど]お願[ねが]いします。', 'mou ichido', '{"hiragana": "もういちど"}', 21),
+  ('00000000-0000-0000-0000-000000000011', 'ちょっと待って', 'doi mot chut', 'ちょっと待[ま]ってください。', 'chotto matte', '{"hiragana": "ちょっとまって"}', 22),
+  ('00000000-0000-0000-0000-000000000011', '美味しい', 'ngon', 'この料理[りょうり]は美味[おい]しいです。', 'oishii', '{"hiragana": "おいしい"}', 23),
+  ('00000000-0000-0000-0000-000000000011', '楽しい', 'vui', '旅行[りょこう]は楽[たの]しかったです。', 'tanoshii', '{"hiragana": "たのしい"}', 24),
+  ('00000000-0000-0000-0000-000000000011', '難しい', 'kho', '日本語[にほんご]は難[むずか]しいですが、楽[たの]しいです。', 'muzukashii', '{"hiragana": "むずかしい"}', 25),
+  ('00000000-0000-0000-0000-000000000011', '嬉しい', 'vui mung', 'プレゼントをもらって嬉[うれ]しいです。', 'ureshii', '{"hiragana": "うれしい"}', 26),
+  ('00000000-0000-0000-0000-000000000011', 'これ', 'cai nay', 'これは何[なん]ですか。', 'kore', '{"hiragana": "これ"}', 27),
+  ('00000000-0000-0000-0000-000000000011', 'それ', 'cai do', 'それをください。', 'sore', '{"hiragana": "それ"}', 28),
+  ('00000000-0000-0000-0000-000000000011', 'あれ', 'cai kia', 'あれは富士山[ふじさん]です。', 'are', '{"hiragana": "あれ"}', 29);

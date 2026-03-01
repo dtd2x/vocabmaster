@@ -1,10 +1,11 @@
 import { useAudio } from '@/hooks/useAudio'
+import type { AudioLang } from '@/lib/audio'
 import { cn } from '@/lib/utils'
 
 interface AudioButtonProps {
   word: string
   audioUrl?: string | null
-  lang?: 'en-US' | 'vi-VN'
+  lang?: AudioLang
   size?: 'sm' | 'md' | 'lg'
   className?: string
 }
