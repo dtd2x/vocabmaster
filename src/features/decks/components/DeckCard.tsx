@@ -50,11 +50,18 @@ export function DeckCard({ deck, index }: DeckCardProps) {
               {deck.name.charAt(0).toUpperCase()}
             </span>
           </div>
-          {deck.card_count > 0 && (
-            <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-sm">
-              <span className="text-xs font-semibold text-white">{deck.card_count} thẻ</span>
-            </div>
-          )}
+          <div className="absolute top-3 right-3 flex items-center gap-1.5">
+            {deck.language === 'ja' && (
+              <div className="px-2 py-1 rounded-full bg-white/20 backdrop-blur-sm">
+                <span className="text-xs font-semibold text-white">🇯🇵</span>
+              </div>
+            )}
+            {deck.card_count > 0 && (
+              <div className="px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-sm">
+                <span className="text-xs font-semibold text-white">{deck.card_count} thẻ</span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Content */}
