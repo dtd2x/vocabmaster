@@ -51,7 +51,7 @@ export function PresetDecksPage() {
   if (loading) return <PageSpinner />
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div>
       <div className="mb-6">
         <button
           onClick={() => navigate('/decks')}
@@ -66,7 +66,7 @@ export function PresetDecksPage() {
         <p className="text-gray-500 mt-1">Chọn bộ từ phổ biến để bắt đầu học ngay</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
         {decks.map((deck, i) => (
           <motion.div
             key={deck.id}

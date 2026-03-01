@@ -13,20 +13,18 @@ const sizeClasses = {
   lg: 'w-20 h-20 text-2xl',
 }
 
+const DEFAULT_AVATAR = '/assets/default-avatar.png'
+
 export function UserAvatar({ avatarUrl, displayName, size = 'md', className }: UserAvatarProps) {
-  const initial = displayName?.charAt(0)?.toUpperCase() || 'U'
+  const src = avatarUrl || DEFAULT_AVATAR
 
   return (
-    <div className={cn('rounded-full bg-primary-500 flex items-center justify-center overflow-hidden shrink-0', sizeClasses[size], className)}>
-      {avatarUrl ? (
-        <img
-          src={avatarUrl}
-          alt={displayName || 'Avatar'}
-          className="w-full h-full object-cover"
-        />
-      ) : (
-        <span className="font-semibold text-white">{initial}</span>
-      )}
+    <div className={cn('rounded-full bg-white flex items-center justify-center overflow-hidden shrink-0', sizeClasses[size], className)}>
+      <img
+        src={src}
+        alt={displayName || 'Avatar'}
+        className="w-full h-full object-cover"
+      />
     </div>
   )
 }

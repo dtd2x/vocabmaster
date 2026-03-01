@@ -40,7 +40,7 @@ export function AchievementsPage() {
 
   if (error) {
     return (
-      <div className="max-w-4xl mx-auto">
+      <div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Thành tích</h1>
         <EmptyState
           title="Chưa có dữ liệu"
@@ -53,7 +53,7 @@ export function AchievementsPage() {
   const unlockedCount = achievements.filter(a => a.unlocked).length
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div>
       <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Thành tích</h1>
 
       {/* Level card */}
